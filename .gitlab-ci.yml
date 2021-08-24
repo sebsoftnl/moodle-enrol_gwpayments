@@ -1,0 +1,63 @@
+services:
+  - mysql:5.7
+
+cache:
+  paths:
+    - $HOME/.composer/cache
+    - $HOME/.npm
+
+stages:
+  - test
+  - deploy
+
+variables:
+  DB: "mysqli"
+  MYSQL_ROOT_PASSWORD: "superrootpass"
+  TRAVIS_BUILD_DIR: "$CI_PROJECT_DIR"
+  MOODLE_DIR: "/var/www/html/moodle"
+  # If we want to ignore some templates, provide them here.
+  #MUSTACHE_IGNORE_NAMES: "<file>.mustache, <file2>.mustache, ..., <filen>.mustache"
+
+.job_template: &job_definition
+  stage: test
+  allow_failure: false
+  image: git.sebsoft.nl:5050/sebsoft/open-source/moodle-cidocker:latest
+  script:
+    - cd /root/
+    - umask u+x
+    - cd $CI_PROJECT_DIR/..
+    - source /root/.nvm/nvm.sh
+    - /root/ci/bin/moodle-plugin-ci install --moodle=$MOODLE_DIR --db-user=root --db-pass=superrootpass --db-host=mysql -vvv
+    # Start actually running the CI now.
+    - exit_code+=(0)
+    - /root/ci/bin/moodle-plugin-ci phplint || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci phpcpd || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci phpmd || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci codechecker || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci validate || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci savepoints || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci mustache || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci grunt || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci phpdoc || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci phpunit || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci behat || exit_code+=($?)
+    - for i in ${exit_code[@]}; do echo "Exit code ${exit_code[$i]}"; if [ "${exit_code[$i]}" -gt 0 ]; then exit 1; fi; done;
+
+Moodle 3.11:
+  <<: *job_definition
+  variables:
+    MOODLE_BRANCH: "MOODLE_311_STABLE"
+
+Moodle 3.10:
+  <<: *job_definition
+  variables:
+    MOODLE_BRANCH: "MOODLE_310_STABLE"
+
+deploy:
+  stage: deploy
+  image: moodlehq/moodle-php-apache:7.4
+  script: 
+    - echo "Deploying to Github..."
+    - echo "Deploy to Github completed..."
+  only:
+     - master
