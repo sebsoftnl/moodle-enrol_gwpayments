@@ -58,6 +58,11 @@ deploy:
   image: moodlehq/moodle-php-apache:7.4
   script: 
     - echo "Deploying to Github..."
+    - git checkout -b main
+    - if [ "$(git remote | grep github | wc -l)" -eq "0" ]; then git remote add github $PUSHLOCATION; fi
+    - git branch -M main
+    - git push -u github main
     - echo "Deploy to Github completed..."
   only:
-     - master
+     - main
+
