@@ -26,8 +26,8 @@
  * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$string['pluginname'] = 'Inscripción po pago';
-$string['pluginname_help'] = 'Este pluginn permite inscribirse a un curso pagando con las pasarelas de pago estandar de Moodle y incorpora la posibilidad de usar cupones de descuento';
+$string['pluginname'] = 'Inscripción por pago';
+$string['pluginname_help'] = 'Este plugin permite inscribirse a un curso pagando con las pasarelas de pago estandar de Moodle y incorpora la posibilidad de usar cupones de descuento';
 $string['promo'] = 'PaymentS enrolment plugin for Moodle';
 $string['promodesc'] = 'This plugin is written by Sebsoft Managed Hosting & Software Development
 (<a href=\'https://www.sebsoft.nl/\' target=\'_new\'>https://sebsoft.nl</a>).<br /><br />

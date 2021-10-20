@@ -31,7 +31,7 @@ require_once("lib.php");
 
 // Not for guests.
 if (isguestuser()) {
-    redirect('/');
+    redirect( new moodle_url('/', array('id'=>$PAGE->course->id)));
 }
 
 $cid = optional_param('cid', 0, PARAM_INT);
