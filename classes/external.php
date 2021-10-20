@@ -151,10 +151,10 @@ class external extends external_api {
             'error' => new external_value(PARAM_TEXT, 'if result was false, error is here', false),
             'data' => new external_single_structure([
                 'currency' => new external_value(PARAM_ALPHA, 'Currency'),
-                'cost' => new external_value(PARAM_FLOAT, 'Cost'),
+                'cost' => new external_value(PARAM_TEXT, 'Cost'),
                 'percentage' => new external_value(PARAM_TEXT, 'Discount percentage'),
-                'discount' => new external_value(PARAM_FLOAT, 'Discount amount'),
-                'newprice' => new external_value(PARAM_FLOAT, 'New cost amount'),
+                'discount' => new external_value(PARAM_TEXT, 'Discount amount'),
+                'newprice' => new external_value(PARAM_TEXT, 'New cost amount'),
                 'html' => new external_value(PARAM_RAW, 'HTML formatted replacement for the new cost'),
             ], 'response data', false)
         ]);
