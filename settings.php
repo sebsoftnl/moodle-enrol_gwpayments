@@ -132,5 +132,5 @@ if ($hassiteconfig) {
     $node = new admin_category('gwpayments', get_string('pluginname', 'enrol_gwpayments'));
     $ADMIN->add('root', $node);
     $ADMIN->add('gwpayments', new admin_externalpage('aiocoupons', get_string('coupons:manage', 'enrol_gwpayments'),
-            new moodle_url('/enrol/gwpayments/admin.php', array('page' => 'aiocoupons'))));
+            new moodle_url('/enrol/gwpayments/couponmanager.php', array('page' => 'aiocoupons'))));
 }
