@@ -45,7 +45,7 @@ class order_delivered extends \core\event\base {
      * Initialise required event data properties.
      */
     protected function init() {
-        $this->data['objecttable'] = 'enrol_gwpayments';
+        $this->data['objecttable'] = 'enrol';
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }

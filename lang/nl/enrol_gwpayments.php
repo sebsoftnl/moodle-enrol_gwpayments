@@ -154,3 +154,10 @@ $string['expirymessageenrolledbody'] = 'Beste {$a->user},
 Je aanmelding in cursus \'{$a->course}\' gaat vervallen op {$a->timeend}.
 
 ls je hier een probleem mee hebt, neem dan contact op met {$a->enroller}.';
+$string['gwpayments:config'] = 'gwpayment aanmelding configureren';
+$string['gwpayments:manage'] = 'gwpayment aanmeldingen beheren';
+$string['gwpayments:unenrol'] = 'gwpayment aanmeldingen annuleren';
+$string['gwpayments:unenrolself'] = 'Zelf afmelden van gwpayment aanmeldingen';
+$string['gwpayments:createcoupon'] = 'Coupon/voucher codes voor gwpayment aanmeldingen aanmaken';
+$string['gwpayments:editcoupon'] = 'Coupon/voucher codes voor gwpayment aanmeldingen bewerken';
+$string['gwpayments:deletecoupon'] = 'Coupon/voucher codes voor gwpayment aanmeldingen verwijderen';

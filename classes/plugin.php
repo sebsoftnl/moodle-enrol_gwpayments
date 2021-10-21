@@ -270,7 +270,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             $data->userfullname = fullname($USER);
             $data->currency = $instance->currency;
             $data->cost = $cost;
-            $data->vat = (int)$instance->customint1;
+            $data->vat = (int)$instance->customint3;
             $data->instancename = $this->get_instance_name($instance);
             $data->localisedcost = format_float($cost, 2, true);
             $data->coursename = $course->fullname;
