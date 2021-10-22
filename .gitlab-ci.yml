@@ -10,7 +10,8 @@ variables:
   MOODLE_DIR: "/var/www/html/moodle"
   # If we want to ignore some templates, provide them here.
   #MUSTACHE_IGNORE_NAMES: "<file>.mustache, <file2>.mustache, ..., <filen>.mustache"
-  PLUGIN: enrol_gwpayments
+  PLUGIN: 'enrol_gwpayments'
+  PATHNAME: 'enrol/gwpayments'
   REPOURL: 'https://github.com/sebsoftnl/moodle-enrol_gwpayments'
   REPOSYS: 'git'
   # Moodle auto format = 0, Markdown = 4, Flat txt = 2
@@ -47,8 +48,9 @@ variables:
     - /root/ci/bin/moodle-plugin-ci behat || exit_code+=($?)
     - for i in ${exit_code[@]}; do echo "Exit code ${exit_code[$i]}"; if [ "${exit_code[$i]}" -gt 0 ]; then exit 1; fi; done;
     - echo "Final testing... Have we entered all language variables correctly?"
-    - /usr/local/bin/moosh -n dev-langusage . | grep '... missing'
-    - if [ "$(/usr/local/bin/moosh -n dev-langusage . 2>/dev/null | grep '... missing' -c)" != "0" ]; then echo "Please check there are no missing language strings."; exit 1; fi
+    - cd /var/www/html/moodle
+    - /usr/local/bin/moosh -p /var/www/html/moodle/ -n dev-langusage $PATHNAME
+    - if [ "$(/usr/local/bin/moosh -p /var/www/html/moodle/ -n dev-langusage $PATHNAME 2>/dev/null | grep '... missing' -c)" != "0" ]; then echo "Please check there are no missing language strings."; exit 1; else echo "No issues with languages detected"; exit 0; fi
 
 Moodle 3.11:
   <<: *job_definition
