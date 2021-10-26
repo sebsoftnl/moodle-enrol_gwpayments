@@ -128,6 +128,8 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         $plugin->enrol_user($instance, $userid, $instance->roleid, $timestart, $timeend);
 
+        /**Aquí meter el tema de las Invoices QQQ */
+
         // We will dispatch en event.
         \enrol_gwpayments\event\order_delivered::trigger_from_data($instance->id, $userid);
 
