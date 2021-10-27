@@ -161,3 +161,6 @@ $string['gwpayments:unenrolself'] = 'Self unenrolment for gwpayment enrolments';
 $string['gwpayments:createcoupon'] = 'Delete coupon/voucher codes for gwpayment enrolments';
 $string['gwpayments:editcoupon'] = 'Edit coupon/voucher codes for gwpayment enrolments';
 $string['gwpayments:deletecoupon'] = 'Delete coupon/voucher codes for gwpayment enrolments';
+$string['event:order:delivered'] = 'Order delivered/enrolment created';
+$string['unenrolselfconfirm'] = 'Do you really want to unenrol yourself from course "{$a}"?';
+$string['costerror'] = 'Cost must be defined as a numeric/floating point value';
