@@ -15,9 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for enrol_gwpayments
+ * lib file.
  *
- * File         version.php
+ * Normally we wouldn't need lib.php because it's empty and serves no purpose,
+ * nut it is MANDATED for the file to exist by "enrol_get_instances()"
+ *
+ * File         lib.php
  * Encoding     UTF-8
  *
  * @package     enrol_gwpayments
@@ -25,11 +28,11 @@
  * @copyright   2021 Ing. R.J. van Dongen
  * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- **/
-defined('MOODLE_INTERNAL') || die();
-$plugin->version     = 2021081605;
-$plugin->requires    = 2020110900; // Moodle 3.10+.
-$plugin->component   = 'enrol_gwpayments';
-$plugin->maturity    = MATURITY_STABLE;
-$plugin->release     = '1.0.5 (build 2021081605)';
-$plugin->dependencies = array();
+ */
+
+/**
+ * Map icons for font-awesome themes.
+ */
+function enrol_gwpayments_get_fontawesome_icon_map() {
+    return [];
+}

@@ -1,7 +1,13 @@
+* Version 1.0.5 build 2021081605
+
+** Emergency fix: Re-add lib.php due to it's mandated by "enrol_get_instances()" in enrollib.php
+
+-----
 * Version 1.0.4 build 2021081604
 
 ** Resolved #6 (fixed in previous version, this will autoclose the issue).
 ** Emergency fix: couponmanager fatal error for requiring removed lib.php
+** Re-add lib.php due to it's mandated by "enrol_get_instances()" in enrollib.php
 
 -----
 
