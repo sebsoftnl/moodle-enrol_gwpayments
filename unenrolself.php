@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * unenrol a user from enrol_gwpayments
+ * self unenrol a user from enrol_gwpayments
  *
- * File         lib.php
+ * File         unenrolself.php
  * Encoding     UTF-8
  *
  * @package     enrol_gwpayments

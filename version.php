@@ -31,5 +31,5 @@ $plugin->version     = 2021081603;
 $plugin->requires    = 2020110900; // Moodle 3.10+.
 $plugin->component   = 'enrol_gwpayments';
 $plugin->maturity    = MATURITY_STABLE;
-$plugin->release     = '1.0.3 (build 2021081603)';
+$plugin->release     = '1.0.4 (build 2021081604)';
 $plugin->dependencies = array();

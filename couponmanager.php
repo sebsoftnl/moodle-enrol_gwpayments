@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Return page after payment
+ * Coupon manager
  *
- * File         lib.php
+ * File         couponmanager.php
  * Encoding     UTF-8
  *
  * @package     enrol_gwpayments
@@ -27,7 +27,6 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require("../../config.php");
-require_once("lib.php");
 
 // Not for guests.
 if (isguestuser()) {

@@ -1,3 +1,10 @@
+* Version 1.0.4 build 2021081604
+
+** Resolved #6 (fixed in previous version, this will autoclose the issue).
+** Emergency fix: couponmanager fatal error for requiring removed lib.php
+
+-----
+
 * Version 1.0.3 build 2021081603
 
 ** Resolve #5 (do not include coupon functionality if not in use)
