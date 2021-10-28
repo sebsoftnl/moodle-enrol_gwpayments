@@ -29,6 +29,8 @@
 
 namespace enrol_gwpayments\payment;
 
+use enrol_gwpayments\local\helper;
+
 /**
  * Payment subsystem callback implementation for enrol_gwpayments.
  *
@@ -60,7 +62,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         // See if we have a valid "coupon record" or any other need to modify our data.
         try {
-            $result->amount = \enrol_gwpayments\local\helper::apply_stored_coupon_on_cost($result->amount);
+            $result->amount = helper::apply_stored_coupon_on_cost($result->amount);
         } catch (\Exception $e) {
             debugging($e->getMessage(), DEBUG_DEVELOPER);
         }
@@ -128,7 +130,13 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         $plugin->enrol_user($instance, $userid, $instance->roleid, $timestart, $timeend);
 
-        // We will dispatch en event.
+        // This is somewhat nasty because it's not fool-proof (payments can come in MUCH later).
+        // Use coupon if in session.
+        if (helper::has_session_coupon()) {
+            helper::use_session_coupon($paymentid);
+        }
+
+        // We will dispatch an event.
         \enrol_gwpayments\event\order_delivered::trigger_from_data($instance->id, $userid);
 
         return true;

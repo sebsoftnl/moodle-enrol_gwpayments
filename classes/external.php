@@ -60,7 +60,7 @@ class external extends external_api {
      * @throws exception
      */
     public static function check_coupon($couponcode, $courseid, $instanceid) {
-        global $DB;
+        global $DB, $USER;
         // We always must pass webservice params through validate_parameters.
         $params = self::validate_parameters(
             self::check_coupon_parameters(),
@@ -94,7 +94,6 @@ class external extends external_api {
             }
 
             // Generate result.
-            $rs = array();
             if ($coupon->typ === 'percentage') {
                 $percentage = $coupon->value;
                 $discount = intval($coupon->value * $enrol->cost) / 100;
@@ -102,16 +101,39 @@ class external extends external_api {
                 $discount = floatval($coupon->value);
                 $percentage = intval(100 * ($coupon->value / $enrol->cost));
             }
-            $rs['currency'] = $enrol->currency;
-            $rs['cost'] = format_float($enrol->cost);
-            $rs['percentage'] = format_float($percentage, 2, true) . '%';
-            $rs['discount'] = format_float($discount, 2, true);
-            $rs['newprice'] = format_float($enrol->cost - $discount, 2, true);
-            $rs = (object) $rs;
-            $rs->html = get_string('coupon:newprice', 'enrol_gwpayments', $rs);
 
-            // Please do nOT forget to stuff this in the session.
-            local\helper::store_session_coupon($coupon->code, $coupon->courseid, $params['instanceid']);
+            $a = [
+                'currency' => $enrol->currency,
+                'cost' => format_float($enrol->cost, 2, true),
+                'percentage' => format_float($percentage, 2, true) . '%',
+                'discount' => format_float($discount, 2, true),
+                'newprice' => format_float($enrol->cost - $discount, 2, true)
+            ];
+
+            $rs = (object)[
+                'currency' => $enrol->currency,
+                'cost' => floatval($enrol->cost),
+                'percentage' => floatval($percentage),
+                'discount' => floatval($discount),
+                'newprice' => floatval($enrol->cost - $discount),
+                'html' => get_string('coupon:newprice', 'enrol_gwpayments', $a),
+                'freepass' => false
+            ];
+
+            if ((float)$rs->newprice < 0.01) {
+                // New price is basically a zero payment. Check config!
+                if ((bool) get_config('enrol_gwpayments', 'enablebypassinggateway')) {
+                    // Free pass! Perform delivery of order BUT with 0 as payment id.
+                    payment\service_provider::deliver_order('fee', $enrol->id, 0, $USER->id);
+                    // Set variables.
+                    $rs->freepass = true;
+                    $rs->freepassredirect = payment\service_provider::get_success_url('fee', $enrol->id)->out(false);
+                    \core\notification::success(get_string('enrolfreepass', 'enrol_gwpayments'));
+                }
+            } else {
+                // Please do NOT forget to stuff this in the session.
+                local\helper::store_session_coupon($coupon->code, $coupon->courseid, $params['instanceid']);
+            }
 
             return (object)[
                 'result' => true,
@@ -152,10 +174,12 @@ class external extends external_api {
             'data' => new external_single_structure([
                 'currency' => new external_value(PARAM_ALPHA, 'Currency'),
                 'cost' => new external_value(PARAM_FLOAT, 'Cost'),
-                'percentage' => new external_value(PARAM_TEXT, 'Discount percentage'),
+                'percentage' => new external_value(PARAM_FLOAT, 'Discount percentage'),
                 'discount' => new external_value(PARAM_FLOAT, 'Discount amount'),
                 'newprice' => new external_value(PARAM_FLOAT, 'New cost amount'),
                 'html' => new external_value(PARAM_RAW, 'HTML formatted replacement for the new cost'),
+                'freepass' => new external_value(PARAM_BOOL, 'Whether or not a free pass was granted', VALUE_OPTIONAL),
+                'freepassredirect' => new external_value(PARAM_LOCALURL, 'Free pass redirect URL', VALUE_OPTIONAL),
             ], 'response data', false)
         ]);
     }

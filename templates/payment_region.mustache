@@ -86,9 +86,11 @@
 </div>
 {{#debug}}{{{.}}}{{/debug}}
 {{#js}}
+    {{#enablecoupon}}
     require(['enrol_gwpayments/module'], function(module) {
         module.init();
     });
+    {{/enablecoupon}}
     require(['core_payment/gateways_modal'], function(modal) {
         modal.init();
     });

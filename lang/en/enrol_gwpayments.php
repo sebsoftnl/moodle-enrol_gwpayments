@@ -38,8 +38,8 @@ $string['mailstudents'] = 'Notify students';
 $string['mailteachers'] = 'Notify teachers';
 $string['expiredaction'] = 'Enrolment expiration action';
 $string['expiredaction_help'] = 'Select action to carry out when user enrolment expires. Please note that some user data and settings are purged from course during course unenrolment.';
-$string['status'] = 'Allow ClassicPay enrolments';
-$string['status_help'] = 'Allow users to use ClassicPay to enrol into a course by default.';
+$string['status'] = 'Allow gateway payments enrolments';
+$string['status_help'] = 'Allow users to use gateway payments to enrol into a course by default.';
 $string['cost'] = 'Enrol cost';
 $string['vat'] = 'VAT';
 $string['vat_help'] = 'VAT percentage of course cost (note: course cost is including VAT).';
@@ -47,7 +47,7 @@ $string['enablecoupon'] = 'Enable coupons?';
 $string['enablecoupon_help'] = 'Check this option to enable entering of coupons by default in the payment screen.
 You can enable or disable it on a per enrolment instance level.';
 $string['defaultrole'] = 'Default role assignment';
-$string['defaultrole_help'] = 'Select role which should be assigned to users during ClassicPay enrolments';
+$string['defaultrole_help'] = 'Select role which should be assigned to users during gateway payments enrolments';
 $string['enrolperiod'] = 'Enrolment duration';
 $string['enrolperiod_help'] = 'Length of time that the enrolment is valid, starting with the moment the user is enrolled. If disabled, the enrolment duration will be unlimited.';
 $string['nocost'] = 'There is no cost associated with enrolling in this course!';
@@ -164,3 +164,14 @@ $string['gwpayments:deletecoupon'] = 'Delete coupon/voucher codes for gwpayment 
 $string['event:order:delivered'] = 'Order delivered/enrolment created';
 $string['unenrolselfconfirm'] = 'Do you really want to unenrol yourself from course "{$a}"?';
 $string['costerror'] = 'Cost must be defined as a numeric/floating point value';
+$string['enablebypassinggateway'] = 'Allow bypassing of payment gateways?';
+$string['enablebypassinggateway_help'] = 'When enabled, this will completely bypass the payment gateways
+whenever the (discounted) cost is zero. Many PSP\'s can\'t cope with a payment of 0.
+Because not all payment gateway implementations will be able to bypass trying to make a zero payment,
+but will fail as a result, this setting can be enabled to provide a solution.';
+$string['enrolfreepass'] = 'You\'ve freely been enrolled into the course.';
+$string['warn:zeropayment'] = 'Note: when using discount codes that lead to an ultimate payment of zero,
+for instance when using a 100% discount, you should be aware not all payment gateway implementations
+can handle this. It is very likely you will ultimately end up with an error from the payment service provider.
+To work around this, you or the systems administrator <i>can</i> enable bypassing the payment gateways for
+zero payments (through the global plugin settings). The enrolment will then be done but <i>without</i> a valid payment id (we\'ll use a value of 0 as paymentid).';

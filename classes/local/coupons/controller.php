@@ -119,7 +119,9 @@ class controller {
         echo $this->renderer->header();
         echo $this->renderer->get_tabs($this->page->context, 'coupons', empty($cid) ? [] : ['cid' => $cid]);
         echo '<div class="enrol-gwpayments-container">';
-        echo '<div class="enrol-gwpayments-container">';
+        echo '<div class="alert alert-warning">';
+        echo get_string('warn:zeropayment', 'enrol_gwpayments');
+        echo '</div>';
         $table->render(25);
         echo '</div>';
         echo $strnewform;

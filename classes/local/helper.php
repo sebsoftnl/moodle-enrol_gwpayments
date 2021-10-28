@@ -63,6 +63,14 @@ class helper {
     }
 
     /**
+     * Clear session data
+     */
+    public static function has_session_coupon() {
+        global $SESSION;
+        return property_exists($SESSION, 'enrol_gwpayments_coupon');
+    }
+
+    /**
      * Store last known valid coupon code in session.
      *
      * @param string $code
@@ -78,6 +86,24 @@ class helper {
             'itemid' => $instanceid,
             'courseid' => $courseid
         ];
+    }
+
+    /**
+     * Use the coupon in the session.
+     *
+     * @param int $paymentid not used yet, but here for future usage.
+     * @return void
+     */
+    public static function use_session_coupon(int $paymentid = null) {
+        global $DB, $SESSION;
+        if (static::has_session_coupon()) {
+            $couponrecord = static::get_coupon($SESSION->enrol_gwpayments_coupon->code);
+            if (is_object($couponrecord)) {
+                $sql = 'UPDATE  {enrol_gwpayments_coupon} SET numused = numused + 1, timemodified = ? WHERE id = ?';
+                $DB->execute($sql, [time(), $couponrecord->id]);
+            }
+            static::clear_session_coupon();
+        }
     }
 
     /**

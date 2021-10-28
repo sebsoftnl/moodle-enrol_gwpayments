@@ -64,10 +64,14 @@ const performCheck = (e) => {
     checkCode(code, el.dataset.courseid, el.dataset.instanceid)
         .then((response) => {
             if (response.result) {
-                document.querySelector('#enrol-gwpayments-coupondiscount').innerHTML = response.data.html;
-                document.querySelector('#enrol-gwpayments-coupondiscount').classList.remove('warning');
-                document.querySelector('#enrol-gwpayments-coupondiscount').classList.add('success');
-                document.querySelector('#enrol-gwpayments-basecost').classList.add('enrol-gwpayments-strike');
+                if (response.data.freepass) {
+                    window.location.href = response.data.freepassredirect;
+                } else {
+                    document.querySelector('#enrol-gwpayments-coupondiscount').innerHTML = response.data.html;
+                    document.querySelector('#enrol-gwpayments-coupondiscount').classList.remove('warning');
+                    document.querySelector('#enrol-gwpayments-coupondiscount').classList.add('success');
+                    document.querySelector('#enrol-gwpayments-basecost').classList.add('enrol-gwpayments-strike');
+                }
             } else {
                 document.querySelector('#enrol-gwpayments-coupondiscount').innerHTML = response.error;
                 document.querySelector('#enrol-gwpayments-coupondiscount').classList.add('warning');

@@ -38,8 +38,8 @@ $string['mailstudents'] = 'E-mail studenten';
 $string['mailteachers'] = 'E-mail leraren';
 $string['expiredaction'] = 'Enrolment verloop actie';
 $string['expiredaction_help'] = 'Selecteer actie uit te voeren wanneer de gebruiker de inschrijving verloopt. Houdt u er rekening mee dat sommige gebruikersgegevens en instellingen kunnen worden verwijderd.';
-$string['status'] = 'Toestaan ClassicPay inschrijvingen';
-$string['status_desc'] = 'Sta gebruikers toe om ClassicPay gebruiken om in te schrijven in een cursus standaard.';
+$string['status'] = 'Toestaan gateway payments inschrijvingen';
+$string['status_desc'] = 'Sta gebruikers toe om gateway payments gebruiken om in te schrijven in een cursus standaard.';
 $string['cost'] = 'Inschrijf kosten';
 $string['vat'] = 'BTW';
 $string['vat_help'] = 'BTW percentage voor cursus kosten (gegeven cursuskosten zijn incl. BTW).';
@@ -47,7 +47,7 @@ $string['enablecoupon'] = 'Gebruik van coupons inschakelen?';
 $string['enablecoupon_help'] = 'Vink dezeoptie aan als je standaard het invullen van coupon codes wilt inschakelen in het betaalscherm.
 Je kunt dit per enrolment instantie aan of uitschakelen.';
 $string['defaultrole'] = 'Standaard roltoewijzing';
-$string['defaultrole_desc'] = 'Selecteer rol die de gebruikers moeten worden toegekend tijdens ClassicPay inschrijvingen';
+$string['defaultrole_desc'] = 'Selecteer rol die de gebruikers moeten worden toegekend tijdens gateway payments inschrijvingen';
 $string['enrolperiod'] = 'Inschrijving duur';
 $string['enrolperiod_desc'] = 'Standaard lengte dat een inschrijving geldig is. Indien ingesteld op nul, zal de inschrijving voor onbeperkte tijd zijn';
 $string['nocost'] = 'Er zitten geen kosten aan deze cursus';
@@ -165,3 +165,17 @@ $string['gwpayments:deletecoupon'] = 'Coupon/voucher codes voor gwpayment aanmel
 $string['event:order:delivered'] = 'Bestelling geleverd/aanmelding aangemaakt';
 $string['unenrolselfconfirm'] = 'Wil je je echt afmelden van cursus "{$a}"?';
 $string['costerror'] = 'Kosten moeten als decimale waarde worden gedefinieerd';
+$string['enablebypassinggateway'] = 'Payment gateway bypassing toestaan?';
+$string['enablebypassinggateway_help'] = 'Indien ingeshcakeld zal dit compleet de betaling omzeilen
+via de payment gateways wanneer het totaalbedrag van de betaling 0 is.
+Omdat veel implementaties niet om kunnen gaan met een "lege" betaling kan deze optie ingeschakeld worden
+om dit probleem op te lossen.';
+$string['enrolfreepass'] = 'Je bent gratis in de cursus aangemeld.';
+$string['warn:zeropayment'] = 'Belangrijk: wanneer je kortingen gebruikt die tot een zgn. nulbetaling leiden,
+bijvoorbeeld wanneer je een 100% korting instelt, dien je ervan bewust te zijn dat niet alle payment gateway
+implementaties hiermee overweg kunnen. Het is aannemelijk dat je uiteindelijk een foutmelding krijgt omdat de
+payment service provider geen nulbetaling ondersteunt. De meeste payment gateways zullen hervoor ook geen oplossing bieden.
+Je kunt hier omheen werken door zelf of door de systeembeheerder (voor deze plugin) in te laten stellen dat
+de payment gateways <i>omzeilt></i> worden voor nulbetalingen (in de globale instellingen van deze aanmeldmethode).
+De cursusaanmelding zal dan gedaan worden zonder tussenkomst van de betaalmogelijkheden.
+Er zal dan een referentie van 0 gebruikt worden voor de (voor Moodle interne) betaalreferentie.';

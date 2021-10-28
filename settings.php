@@ -125,6 +125,10 @@ if ($ADMIN->fulltree) {
             get_string('expirythreshold', 'core_enrol'),
             get_string('expirythreshold_help', 'core_enrol'), 86400, 86400));
 
+    $settings->add(new admin_setting_configcheckbox('enrol_gwpayments/enablebypassinggateway',
+            get_string('enablebypassinggateway', 'enrol_gwpayments'),
+            get_string('enablebypassinggateway_help', 'enrol_gwpayments'), 0));
+
 }
 
 // We shall add some navigation.
