@@ -1,3 +1,14 @@
+Version 1.0.6 build 2021081606
+
+** Removed "exit()" statement after redirect in several forms [phpmd:VIOLATION].
+** Removed unused variables in several places [phpmd:VIOLATION].
+** Removed several unused local variables over several files [phpmd:VIOLATION].
+** Fixed newline issues [phpmd:VIOLATION].
+** Removed all MOODLE_INTERNAL for singular classes as per MDLSITE-5967
+** Resolved #11 (coupon code not "used" on free pass)
+** Small readme fix
+
+-----
 * Version 1.0.5 build 2021081605
 
 ** Emergency fix: Re-add lib.php due to it's mandated by "enrol_get_instances()" in enrollib.php

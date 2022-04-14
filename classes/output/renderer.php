@@ -29,8 +29,6 @@
 
 namespace enrol_gwpayments\output;
 
-defined('MOODLE_INTERNAL') or die('NO_ACCESS');
-
 /**
  * enrol_gwpayments\output\renderer
  *

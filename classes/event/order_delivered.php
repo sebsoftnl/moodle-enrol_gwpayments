@@ -28,8 +28,6 @@
  **/
 namespace enrol_gwpayments\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * enrol_gwpayments\event\order_delivered
  *

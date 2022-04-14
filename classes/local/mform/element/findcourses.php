@@ -27,7 +27,7 @@
  */
 namespace enrol_gwpayments\local\mform\element;
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') or die();
 
 use MoodleQuickForm_autocomplete;
 global $CFG;

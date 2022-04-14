@@ -6,7 +6,7 @@ It uses core Moodle's payment gateways to provide payments supporting a wide var
 
 -----
 COUPONS
-The Classicpay plugin provides full support for discount coupons to be created for courses.
+The payments enrolment plugin provides full support for discount coupons to be created for courses.
 A coupon is created either for a specific course or for any accessible course (site wide).
 Coupons consist of a startdate and enddate, a percentual discount, the course
 it was created for, an optional maximum usage and the coupon code itself.

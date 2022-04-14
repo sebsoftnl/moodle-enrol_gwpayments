@@ -29,6 +29,8 @@
 
 namespace enrol_gwpayments;
 
+defined('MOODLE_INTERNAL') or die();
+
 use external_api;
 use external_function_parameters;
 use external_value;
@@ -36,8 +38,6 @@ use external_single_structure;
 use external_multiple_structure;
 use stdClass;
 use exception;
-
-defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/externallib.php');
 
@@ -123,6 +123,8 @@ class external extends external_api {
             if ((float)$rs->newprice < 0.01) {
                 // New price is basically a zero payment. Check config!
                 if ((bool) get_config('enrol_gwpayments', 'enablebypassinggateway')) {
+                    // Force coupon in session so it's code will be "used".
+                    local\helper::store_session_coupon($coupon->code, $coupon->courseid, $enrol->id);
                     // Free pass! Perform delivery of order BUT with 0 as payment id.
                     payment\service_provider::deliver_order('fee', $enrol->id, 0, $USER->id);
                     // Set variables.

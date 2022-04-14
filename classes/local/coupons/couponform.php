@@ -29,7 +29,7 @@
 
 namespace enrol_gwpayments\local\coupons;
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') or die();
 
 require_once($CFG->libdir . '/formslib.php');
 
@@ -207,7 +207,6 @@ class couponform extends \moodleform {
             $DB->insert_record('enrol_gwpayments_coupon', $instance);
         }
         redirect($redirect, get_string($identifier, 'enrol_gwpayments'));
-        exit;
     }
 
 }

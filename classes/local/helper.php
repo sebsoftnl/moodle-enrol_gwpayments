@@ -29,8 +29,6 @@
 
 namespace enrol_gwpayments\local;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * enrol_gwpayments\local\helper
  *

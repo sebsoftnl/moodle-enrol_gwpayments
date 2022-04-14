@@ -27,9 +27,10 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  **/
 defined('MOODLE_INTERNAL') || die();
-$plugin->version     = 2021081605;
-$plugin->requires    = 2020110900; // Moodle 3.10+.
+
+$plugin->version     = 2021081607;
+$plugin->requires    = 2021051700; // Moodle 3.11+.
 $plugin->component   = 'enrol_gwpayments';
 $plugin->maturity    = MATURITY_STABLE;
-$plugin->release     = '1.0.5 (build 2021081605)';
-$plugin->dependencies = array();
+$plugin->release     = '1.0.6 (build 2021081607)';
+$plugin->dependencies = [];

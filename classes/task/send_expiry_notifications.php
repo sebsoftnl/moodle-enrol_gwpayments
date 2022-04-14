@@ -29,8 +29,6 @@
 
 namespace enrol_gwpayments\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The send expiry notifications task.
  *

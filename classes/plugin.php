@@ -31,9 +31,9 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') or die();
-
 use enrol_gwpayments\payment\service_provider;
+
+defined('MOODLE_INTERNAL') or die();
 
 require_once($CFG->dirroot.'/cohort/lib.php');
 
@@ -205,7 +205,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
      * @return string html text, usually a form in a text box
      */
     public function enrol_page_hook(stdClass $instance) {
-        global $CFG, $USER, $OUTPUT, $PAGE, $DB;
+        global $CFG, $USER, $OUTPUT, $DB;
 
         ob_start();
 
@@ -231,10 +231,6 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
 
         $course = $DB->get_record('course', array('id' => $instance->courseid));
         $context = context_course::instance($course->id);
-
-        $shortname = format_string($course->shortname, true, array('context' => $context));
-        $strloginto = get_string("loginto", "", $shortname);
-        $strcourses = get_string("courses");
 
         // Pass $view=true to filter hidden caps if the user cannot see them.
         if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC',
@@ -406,8 +402,8 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         $mform->addElement('text', 'name', get_string('custominstancename', 'enrol'));
         $mform->setType('name', PARAM_TEXT);
 
-        $options = $this->get_status_options();
-        $mform->addElement('select', 'status', get_string('status', 'enrol_gwpayments'), $options);
+        $statusoptions = $this->get_status_options();
+        $mform->addElement('select', 'status', get_string('status', 'enrol_gwpayments'), $statusoptions);
         $mform->setDefault('status', $this->get_config('status'));
 
         $accounts = \core_payment\helper::get_payment_accounts_menu($context);
@@ -444,18 +440,17 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         $mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_gwpayments'), $roles);
         $mform->setDefault('roleid', $this->get_config('roleid'));
 
-        $options = array('optional' => true, 'defaultunit' => 86400);
-        $mform->addElement('duration', 'enrolperiod', get_string('enrolperiod', 'enrol_gwpayments'), $options);
+        $durationoptions = array('optional' => true, 'defaultunit' => 86400);
+        $mform->addElement('duration', 'enrolperiod', get_string('enrolperiod', 'enrol_gwpayments'), $durationoptions);
         $mform->setDefault('enrolperiod', $this->get_config('enrolperiod'));
         $mform->addHelpButton('enrolperiod', 'enrolperiod', 'enrol_gwpayments');
 
-        $options = array('optional' => true);
-        $mform->addElement('date_time_selector', 'enrolstartdate', get_string('enrolstartdate', 'enrol_gwpayments'), $options);
+        $dateoptions = array('optional' => true);
+        $mform->addElement('date_time_selector', 'enrolstartdate', get_string('enrolstartdate', 'enrol_gwpayments'), $dateoptions);
         $mform->setDefault('enrolstartdate', 0);
         $mform->addHelpButton('enrolstartdate', 'enrolstartdate', 'enrol_gwpayments');
 
-        $options = array('optional' => true);
-        $mform->addElement('date_time_selector', 'enrolenddate', get_string('enrolenddate', 'enrol_gwpayments'), $options);
+        $mform->addElement('date_time_selector', 'enrolenddate', get_string('enrolenddate', 'enrol_gwpayments'), $dateoptions);
         $mform->setDefault('enrolenddate', 0);
         $mform->addHelpButton('enrolenddate', 'enrolenddate', 'enrol_gwpayments');
 
@@ -469,12 +464,12 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             $mform->setConstant('customint5', 0);
         }
 
-        $options = array(
+        $expiryoptions = array(
             0 => get_string('no'),
             1 => get_string('expirynotifyenroller', 'core_enrol'),
             2 => get_string('expirynotifyall', 'core_enrol')
         );
-        $mform->addElement('select', 'expirynotify', get_string('expirynotify', 'core_enrol'), $options);
+        $mform->addElement('select', 'expirynotify', get_string('expirynotify', 'core_enrol'), $expiryoptions);
         $mform->setDefault('expirynotify', $this->get_config('expirynotify'));
         $mform->addHelpButton('expirynotify', 'expirynotify', 'core_enrol');
 
@@ -590,10 +585,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
      * @throws coding_exception
      */
     public function get_action_icons(stdClass $instance) {
-        global $OUTPUT;
-
         $icons = parent::get_action_icons($instance);
-
         return $icons;
     }
 

@@ -29,8 +29,6 @@
 
 namespace enrol_gwpayments;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * enrol_gwpayments\exception
  *
