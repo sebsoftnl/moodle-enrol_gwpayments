@@ -28,9 +28,9 @@
  **/
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version     = 2021081607;
-$plugin->requires    = 2021051700; // Moodle 3.11+.
+$plugin->version     = 2022092700;
+$plugin->requires    = 2022041900; // Moode 4.0+.
 $plugin->component   = 'enrol_gwpayments';
 $plugin->maturity    = MATURITY_STABLE;
-$plugin->release     = '1.0.6 (build 2021081607)';
+$plugin->release     = '1.0.7 (build 2022092700)';
 $plugin->dependencies = [];

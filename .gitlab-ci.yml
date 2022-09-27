@@ -35,37 +35,38 @@ variables:
     - /root/ci/bin/moodle-plugin-ci install --moodle=$MOODLE_DIR --db-user=root --db-pass=superrootpass --db-host=mysql -vvv
     # Start actually running the CI now.
     - exit_code+=(0)
-    - /root/ci/bin/moodle-plugin-ci phplint || exit_code+=($?)
-    - /root/ci/bin/moodle-plugin-ci phpcpd || exit_code+=($?)
-    - /root/ci/bin/moodle-plugin-ci phpmd || exit_code+=($?)
-    - /root/ci/bin/moodle-plugin-ci codechecker || exit_code+=($?)
-    - /root/ci/bin/moodle-plugin-ci validate || exit_code+=($?)
-    - /root/ci/bin/moodle-plugin-ci savepoints || exit_code+=($?)
-    - /root/ci/bin/moodle-plugin-ci mustache || exit_code+=($?)
-    - /root/ci/bin/moodle-plugin-ci grunt || exit_code+=($?)
-    - /root/ci/bin/moodle-plugin-ci phpdoc || exit_code+=($?)
-    - /root/ci/bin/moodle-plugin-ci phpunit || exit_code+=($?)
-    - /root/ci/bin/moodle-plugin-ci behat || exit_code+=($?)
+    - /root/ci/bin/moodle-plugin-ci phplint
+    - /root/ci/bin/moodle-plugin-ci phpcpd
+    - /root/ci/bin/moodle-plugin-ci phpmd
+    - /root/ci/bin/moodle-plugin-ci codechecker
+    - /root/ci/bin/moodle-plugin-ci validate
+    - /root/ci/bin/moodle-plugin-ci savepoints
+    - /root/ci/bin/moodle-plugin-ci mustache
+    - /root/ci/bin/moodle-plugin-ci grunt
+    - /root/ci/bin/moodle-plugin-ci phpdoc
+    - /root/ci/bin/moodle-plugin-ci phpunit
+    - /root/ci/bin/moodle-plugin-ci behat
     - echo "Final testing... Have we entered all language variables correctly?"
     - cd /var/www/html/moodle
     - if [ "$MOODLE_VERSION" -ge "39" ]; then echo "Langcheck is supported."; /usr/local/bin/moosh -p /var/www/html/moodle/ -n dev-langusage $PATHNAME; fi
     - if [ "$MOODLE_VERSION" -ge "39" ]; then echo "Langcheck is supported."; if [ "$(/usr/local/bin/moosh -p /var/www/html/moodle/ -n dev-langusage $PATHNAME 2>/dev/null | grep '... missing' -c)" != "0" ]; then echo "Please check there are no missing language strings."; exit 1; else echo "No issues with languages detected"; fi; else echo "Moodle version $MOODLE_VERSION is too old to do correct langcheck, skipping test."; fi;
     - for i in ${exit_code[@]}; do echo "Exit code ${exit_code[$i]}"; if [ "${exit_code[$i]}" -gt 0 ]; then exit 1; fi; done;
 
-Moodle 4.0:
+Moodle 4.1:
   <<: *job_definition
   variables:
     MOODLE_BRANCH: "master"
-    MOODLE_VERSION: 400
+    MOODLE_VERSION: 410
     
-Moodle 3.11:
+Moodle 4.0:
   <<: *job_definition
   variables:
-    MOODLE_BRANCH: "MOODLE_311_STABLE"
+    MOODLE_BRANCH: "MOODLE_400_STABLE"
 
 deploy.gitlab:
   stage: deploy
   image: registry.gitlab.com/gitlab-org/release-cli:latest
+  allow_failure: true
   rules:
     - if: $CI_COMMIT_TAG                  # Run this job when a tag is created manually
   script:

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-import * as Ajax from 'core/ajax';
-import * as Notification from 'core/notification';
+import Ajax from 'core/ajax';
+import Notification from 'core/notification';
 
 /**
  * @type const
