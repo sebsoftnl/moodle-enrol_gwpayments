@@ -1,3 +1,6 @@
+Version 1.0.7 build 2022092700
+* After 98456093214985 stale builds, we decided to ONLY support 4.0 onwards.
+
 Version 1.0.6 build 2021081606
 
 ** Removed "exit()" statement after redirect in several forms [phpmd:VIOLATION].
