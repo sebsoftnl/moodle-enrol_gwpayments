@@ -33,7 +33,7 @@
 
 use enrol_gwpayments\payment\service_provider;
 
-defined('MOODLE_INTERNAL') or die();
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/cohort/lib.php');
 
@@ -154,7 +154,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             return false;
         }
 
-        if (!has_capability('moodle/course:enrolconfig', $context) or !has_capability('enrol/gwpayments:config', $context)) {
+        if (!has_capability('moodle/course:enrolconfig', $context) || !has_capability('enrol/gwpayments:config', $context)) {
             return false;
         }
 
@@ -300,7 +300,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
                 'currency'   => $data->currency,
             );
         }
-        if ($merge and $instances = $DB->get_records('enrol', $merge, 'id')) {
+        if ($merge && $instances = $DB->get_records('enrol', $merge, 'id')) {
             $instance = reset($instances);
             $instanceid = $instance->id;
         } else {
@@ -467,7 +467,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         $expiryoptions = array(
             0 => get_string('no'),
             1 => get_string('expirynotifyenroller', 'core_enrol'),
-            2 => get_string('expirynotifyall', 'core_enrol')
+            2 => get_string('expirynotifyall', 'core_enrol'),
         );
         $mform->addElement('select', 'expirynotify', get_string('expirynotify', 'core_enrol'), $expiryoptions);
         $mform->setDefault('expirynotify', $this->get_config('expirynotify'));
@@ -499,7 +499,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
     public function edit_instance_validation($data, $files, $instance, $context) {
         $errors = array();
 
-        if (!empty($data['enrolenddate']) and $data['enrolenddate'] < $data['enrolstartdate']) {
+        if (!empty($data['enrolenddate']) && $data['enrolenddate'] < $data['enrolstartdate']) {
             $errors['enrolenddate'] = get_string('enrolenddaterror', 'enrol_gwpayments');
         }
 
@@ -508,7 +508,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             $errors['cost'] = get_string('costerror', 'enrol_gwpayments');
         }
 
-        if ($data['expirynotify'] > 0 and $data['expirythreshold'] < 86400) {
+        if ($data['expirynotify'] > 0 && $data['expirythreshold'] < 86400) {
             $errors['expirythreshold'] = get_string('errorthresholdlow', 'core_enrol');
         }
 
@@ -529,7 +529,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             'roleid' => $validroles,
             'enrolperiod' => PARAM_INT,
             'enrolstartdate' => PARAM_INT,
-            'enrolenddate' => PARAM_INT
+            'enrolenddate' => PARAM_INT,
         );
 
         $typeerrors = $this->validate_param_types($data, $tovalidate);
@@ -606,7 +606,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         if (has_capability('enrol/gwpayments:config', $context)) {
             $managelink = new moodle_url('/enrol/editinstance.php', array(
                 'courseid' => $instance->courseid,
-                'id' => $instance->id, 'type' => 'gwpayments'
+                'id' => $instance->id, 'type' => 'gwpayments',
             ));
             $instancesnode->add($this->get_instance_name($instance), $managelink, navigation_node::TYPE_SETTING);
 
@@ -626,7 +626,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
                         'text'          => get_string('pluginname', 'enrol_gwpayments'),
                         'shorttext'     => get_string('pluginname', 'enrol_gwpayments'),
                         'type'          => navigation_node::TYPE_CONTAINER,
-                        'key'           => 'cagwpayments'
+                        'key'           => 'cagwpayments',
                     );
                     $cagwpaymentsnode = new navigation_node($nodeproperties);
                     $courseadminnode->add_node($cagwpaymentsnode, 'users');
@@ -650,7 +650,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
     public function get_newinstance_link($courseid) {
         $context = context_course::instance($courseid, MUST_EXIST);
 
-        if (!has_capability('moodle/course:enrolconfig', $context) or !has_capability('enrol/gwpayments:config', $context)) {
+        if (!has_capability('moodle/course:enrolconfig', $context) || !has_capability('enrol/gwpayments:config', $context)) {
             return null;
         }
 

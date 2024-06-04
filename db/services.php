@@ -45,6 +45,6 @@ $functions = [
         'description' => 'Find courses.',
         'type'        => 'read',
         'ajax'        => true,
-        'loginrequired' => true
+        'loginrequired' => true,
     ),
 ];

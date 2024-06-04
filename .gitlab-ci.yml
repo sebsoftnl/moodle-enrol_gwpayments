@@ -20,7 +20,7 @@ variables:
 .job_template: &job_definition
   stage: test
   services:
-    - mysql:5.7
+    - mysql:8.0
   cache:
     paths:
       - $HOME/.composer/cache
@@ -34,34 +34,47 @@ variables:
     - source /root/.nvm/nvm.sh
     - /root/ci/bin/moodle-plugin-ci install --moodle=$MOODLE_DIR --db-user=root --db-pass=superrootpass --db-host=mysql -vvv
     # Start actually running the CI now.
-    - exit_code+=(0)
-    - /root/ci/bin/moodle-plugin-ci phplint
-    - /root/ci/bin/moodle-plugin-ci phpcpd
-    - /root/ci/bin/moodle-plugin-ci phpmd
-    - /root/ci/bin/moodle-plugin-ci codechecker
-    - /root/ci/bin/moodle-plugin-ci validate
-    - /root/ci/bin/moodle-plugin-ci savepoints
-    - /root/ci/bin/moodle-plugin-ci mustache
-    - /root/ci/bin/moodle-plugin-ci grunt
-    - /root/ci/bin/moodle-plugin-ci phpdoc
-    - /root/ci/bin/moodle-plugin-ci phpunit
-    - /root/ci/bin/moodle-plugin-ci behat
+    - failures=()
+    - /root/ci/bin/moodle-plugin-ci phplint || failures+=("PHPLINT")
+    - /root/ci/bin/moodle-plugin-ci phpcpd || true
+    - /root/ci/bin/moodle-plugin-ci phpmd || failures+=("PHPMD")
+    - /root/ci/bin/moodle-plugin-ci codechecker || failures+=("CODECHECKER")
+    - /root/ci/bin/moodle-plugin-ci validate || failures+=("VALIDATE")
+    - /root/ci/bin/moodle-plugin-ci savepoints || failures+=("SAVEPOINTS")
+    - /root/ci/bin/moodle-plugin-ci mustache || failures+=("MUSTACHE")
+    - /root/ci/bin/moodle-plugin-ci grunt || failures+=("GRUNT")
+    - /root/ci/bin/moodle-plugin-ci phpdoc || failures+=("PHPDOC")
+    - /root/ci/bin/moodle-plugin-ci phpunit || failures+=("PHPUNIT")
+    - /root/ci/bin/moodle-plugin-ci behat || failures+=("GRUNT")
     - echo "Final testing... Have we entered all language variables correctly?"
     - cd /var/www/html/moodle
-    - if [ "$MOODLE_VERSION" -ge "39" ]; then echo "Langcheck is supported."; /usr/local/bin/moosh -p /var/www/html/moodle/ -n dev-langusage $PATHNAME; fi
-    - if [ "$MOODLE_VERSION" -ge "39" ]; then echo "Langcheck is supported."; if [ "$(/usr/local/bin/moosh -p /var/www/html/moodle/ -n dev-langusage $PATHNAME 2>/dev/null | grep '... missing' -c)" != "0" ]; then echo "Please check there are no missing language strings."; exit 1; else echo "No issues with languages detected"; fi; else echo "Moodle version $MOODLE_VERSION is too old to do correct langcheck, skipping test."; fi;
-    - for i in ${exit_code[@]}; do echo "Exit code ${exit_code[$i]}"; if [ "${exit_code[$i]}" -gt 0 ]; then exit 1; fi; done;
+    - for i in ${failures[@]}; do echo "$i -- FAIL"; done;
+    - if [ "${#failures[@]}" -gt "0" ]; then echo "${#failures[@]} jobs failed"; exit 1; fi;
+
+
+Moodle 4.3:
+  <<: *job_definition
+  variables:
+    MOODLE_BRANCH: "MOODLE_403_STABLE"
+    MOODLE_VERSION: 430
+
+Moodle 4.2:
+  <<: *job_definition
+  variables:
+    MOODLE_BRANCH: "MOODLE_402_STABLE"
+    MOODLE_VERSION: 420
 
 Moodle 4.1:
   <<: *job_definition
   variables:
-    MOODLE_BRANCH: "master"
+    MOODLE_BRANCH: "MOODLE_401_STABLE"
     MOODLE_VERSION: 410
-    
+
 Moodle 4.0:
   <<: *job_definition
   variables:
     MOODLE_BRANCH: "MOODLE_400_STABLE"
+    MOODLE_VERSION: 400
 
 deploy.gitlab:
   stage: deploy

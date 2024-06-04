@@ -57,7 +57,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
         $result = (object) [
             'amount' => $instance->cost,
             'currency' => $instance->currency,
-            'accountid' => $instance->customint1
+            'accountid' => $instance->customint1,
         ];
 
         // See if we have a valid "coupon record" or any other need to modify our data.

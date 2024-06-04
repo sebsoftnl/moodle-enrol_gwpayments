@@ -100,7 +100,7 @@ class order_delivered extends \core\event\base {
             'objectid' => $objectid,
             'userid' => $userid,
             'relateduserid' => $userid,
-            'context' => $context
+            'context' => $context,
         ]);
         return $self;
     }
