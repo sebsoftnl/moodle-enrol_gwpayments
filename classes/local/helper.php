@@ -28,6 +28,7 @@
  */
 
 namespace enrol_gwpayments\local;
+use enrol_gwpayments\exception;
 
 /**
  * enrol_gwpayments\local\helper
@@ -82,7 +83,7 @@ class helper {
             'component' => 'enrol_gwpayments',
             'paymentarea' => 'fee',
             'itemid' => $instanceid,
-            'courseid' => $courseid
+            'courseid' => $courseid,
         ];
     }
 

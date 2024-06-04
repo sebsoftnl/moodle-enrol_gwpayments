@@ -29,7 +29,7 @@
 
 namespace enrol_gwpayments\local\coupons;
 
-defined('MOODLE_INTERNAL') or die();
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/formslib.php');
 
@@ -62,8 +62,6 @@ class coupondelete extends \moodleform {
         $mform->setDisableShortforms(true);
         $mform->addElement('header', 'formheader', get_string('coupon:delete', 'enrol_gwpayments'));
         $mform->addElement('static', 'formstatic', '', get_string('coupon:delete:warn', 'enrol_gwpayments', $a));
-        $mform->addElement('hidden', 'id');
-        $mform->setType('id', PARAM_INT);
         $this->add_action_buttons(true, get_string('coupon:delete', 'enrol_gwpayments'));
     }
 
@@ -102,7 +100,7 @@ class coupondelete extends \moodleform {
             return false;
         }
         global $DB;
-        $DB->delete_records('enrol_gwpayments_coupon', array('id' => $data->id));
+        $DB->delete_records('enrol_gwpayments_coupon', array('id' => $this->_customdata->id));
         redirect($redirect, get_string('coupon:deleted', 'enrol_gwpayments'));
     }
 

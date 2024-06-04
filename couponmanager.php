@@ -26,6 +26,7 @@
  * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require("../../config.php");
 
 // Not for guests.

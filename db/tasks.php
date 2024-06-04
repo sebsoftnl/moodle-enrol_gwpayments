@@ -37,7 +37,7 @@ $tasks = array(
         'hour'      => '*/1',
         'day'       => '*',
         'dayofweek' => '*',
-        'month'     => '*'
+        'month'     => '*',
     ),
     array(
         'classname' => '\enrol_manual\task\send_expiry_notifications',
@@ -47,6 +47,6 @@ $tasks = array(
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*',
-        'disabled' => 0
-    )
+        'disabled' => 0,
+    ),
 );

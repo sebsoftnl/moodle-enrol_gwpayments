@@ -26,6 +26,7 @@
  * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require('../../config.php');
 
 $enrolid = required_param('enrolid', PARAM_INT);
@@ -51,7 +52,7 @@ if (!$plugin->get_unenrolself_link($instance)) {
 $PAGE->set_url('/enrol/gwpayments/unenrolself.php', array('enrolid' => $instance->id));
 $PAGE->set_title($plugin->get_instance_name($instance));
 
-if ($confirm and confirm_sesskey()) {
+if ($confirm && confirm_sesskey()) {
     $plugin->unenrol_user($instance, $USER->id);
 
     redirect(new moodle_url('/index.php'));

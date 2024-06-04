@@ -1,3 +1,8 @@
+Version 1.0.8 build 2024060400
+* Thank you https://github.com/dreblen for providing a patch to fix issue 18.
+* Thank you https://github.com/dreblen for providing a hint on the actual issue of issue 19.
+* Updated CI to also support newer Moodle versions.
+
 Version 1.0.7 build 2022092700
 * After 98456093214985 stale builds, we decided to ONLY support 4.0 onwards.
 

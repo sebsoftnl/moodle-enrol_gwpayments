@@ -27,7 +27,7 @@
  */
 namespace enrol_gwpayments\local\mform\element;
 
-defined('MOODLE_INTERNAL') or die();
+defined('MOODLE_INTERNAL') || die();
 
 use MoodleQuickForm_autocomplete;
 global $CFG;
@@ -70,7 +70,7 @@ class findcourses extends MoodleQuickForm_autocomplete {
     public function __construct($elementname = null, $elementlabel = null, $options = array()) {
         $validattributes = array(
             'ajax' => 'enrol_gwpayments/findcourses',
-            'multiple' => true
+            'multiple' => true,
         );
         if (array_key_exists('multiple', $options)) {
             $validattributes['multiple'] = $options['multiple'];

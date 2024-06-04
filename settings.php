@@ -84,7 +84,7 @@ if ($ADMIN->fulltree) {
 
     $optionsyesno = array(
         ENROL_INSTANCE_ENABLED => get_string('yes'),
-        ENROL_INSTANCE_DISABLED => get_string('no')
+        ENROL_INSTANCE_DISABLED => get_string('no'),
     );
     $settings->add(new admin_setting_configselect('enrol_gwpayments/status', get_string('status', 'enrol_gwpayments'),
             get_string('status_help', 'enrol_gwpayments'), ENROL_INSTANCE_DISABLED, $optionsyesno));
@@ -115,7 +115,7 @@ if ($ADMIN->fulltree) {
     $options = array(
         0 => get_string('no'),
         1 => get_string('expirynotifyenroller', 'core_enrol'),
-        2 => get_string('expirynotifyall', 'core_enrol')
+        2 => get_string('expirynotifyall', 'core_enrol'),
     );
     $settings->add(new admin_setting_configselect('enrol_gwpayments/expirynotify',
             get_string('expirynotify', 'core_enrol'),

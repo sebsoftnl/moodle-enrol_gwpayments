@@ -34,7 +34,7 @@ $capabilities = array(
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
-        )
+        ),
     ),
     'enrol/gwpayments:manage' => array(
         'captype' => 'write',
@@ -42,20 +42,20 @@ $capabilities = array(
         'archetypes' => array(
             'manager' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-        )
+        ),
     ),
     'enrol/gwpayments:unenrol' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
             'manager' => CAP_ALLOW,
-        )
+        ),
     ),
     'enrol/gwpayments:unenrolself' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
-        )
+        ),
     ),
 
     'enrol/gwpayments:createcoupon' => array(
@@ -64,7 +64,7 @@ $capabilities = array(
         'archetypes' => array(
             'manager' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
-        )
+        ),
     ),
     'enrol/gwpayments:editcoupon' => array(
         'captype' => 'write',
@@ -72,7 +72,7 @@ $capabilities = array(
         'archetypes' => array(
             'manager' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
-        )
+        ),
     ),
     'enrol/gwpayments:deletecoupon' => array(
         'captype' => 'write',
@@ -80,7 +80,7 @@ $capabilities = array(
         'archetypes' => array(
             'manager' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
-        )
+        ),
     ),
 
 );
