@@ -22,15 +22,16 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  **/
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version     = 2024060400;
+$plugin->version     = 2024090100;
 $plugin->requires    = 2022041900; // Moode 4.0+.
 $plugin->component   = 'enrol_gwpayments';
 $plugin->maturity    = MATURITY_STABLE;
-$plugin->release     = '1.0.8 (build 2024060400)';
+$plugin->release     = '1.1.0 (build 2024090100)';
 $plugin->dependencies = [];
+$plugin->supported = [400, 404];

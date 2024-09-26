@@ -10,7 +10,7 @@
                 <FIELD NAME="courseid" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="code" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="typ" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-                <FIELD NAME="value" TYPE="number" LENGTH="8" DECIMALS="5" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="value" TYPE="number" LENGTH="9" DECIMALS="3" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="validfrom" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="validto" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
                 <FIELD NAME="maxusage" TYPE="int" LENGTH="6" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -22,6 +22,35 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
                 <KEY NAME="code" TYPE="unique" FIELDS="code"/>
             </KEYS>
+        </TABLE>
+        <TABLE NAME="enrol_gwpayments_cusage" COMMENT="enrol_gwpayments_cusage table retrofitted from MySQL">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="11" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="enrolid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="paymentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="couponid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="verified" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+                <FIELD NAME="code" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="typ" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="value" TYPE="number" LENGTH="9" DECIMALS="3" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="discount" TYPE="number" LENGTH="9" DECIMALS="3" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="originalcost" TYPE="number" LENGTH="9" DECIMALS="3" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="coupondata" TYPE="text" LENGTH="medium" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="fk-couponid" TYPE="foreign" FIELDS="couponid" REFTABLE="enrol_gwpayments_coupon" REFFIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="idx-enrolid" UNIQUE="false" FIELDS="enrolid"/>
+                <INDEX NAME="idx-courseid" UNIQUE="false" FIELDS="courseid"/>
+                <INDEX NAME="idx-userid" UNIQUE="false" FIELDS="userid"/>
+                <INDEX NAME="idx-code" UNIQUE="false" FIELDS="code"/>
+            </INDEXES>
         </TABLE>
     </TABLES>
 </XMLDB>

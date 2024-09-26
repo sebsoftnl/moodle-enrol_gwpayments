@@ -22,8 +22,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -34,8 +34,8 @@ namespace enrol_gwpayments\output;
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends \plugin_renderer_base {
@@ -68,7 +68,7 @@ class renderer extends \plugin_renderer_base {
      * @param string $selected selected tab
      * @param array $params any paramaters needed for the base url
      */
-    public function get_tabs($context, $selected, $params = array()) {
+    public function get_tabs($context, $selected, $params = []) {
         global $CFG;
         $tabs = [];
         $inactive = null;

@@ -26,8 +26,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -40,8 +40,8 @@ require_once($CFG->dirroot.'/cohort/lib.php');
 /**
  * All-in-one enrolment plugin implementation.
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class enrol_gwpayments_plugin extends \enrol_plugin {
@@ -91,9 +91,9 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             break;
         }
         if ($found) {
-            return array(new pix_icon('icon', get_string('pluginname', 'enrol_gwpayments'), 'enrol_gwpayments'));
+            return [new pix_icon('icon', get_string('pluginname', 'enrol_gwpayments'), 'enrol_gwpayments')];
         }
-        return array();
+        return [];
     }
 
     /**
@@ -174,10 +174,10 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
     /**
      * Add new instance of enrol plugin.
      * @param object $course
-     * @param array $fields instance fields
+     * @param array|null $fields instance fields
      * @return int id of new instance, null if can not be created
      */
-    public function add_instance($course, array $fields = null) {
+    public function add_instance($course, ?array $fields = null) {
         if ($fields && !empty($fields['cost'])) {
             $fields['cost'] = unformat_float($fields['cost']);
         }
@@ -209,7 +209,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
 
         ob_start();
 
-        if ($DB->record_exists('user_enrolments', array('userid' => $USER->id, 'enrolid' => $instance->id))) {
+        if ($DB->record_exists('user_enrolments', ['userid' => $USER->id, 'enrolid' => $instance->id])) {
             return ob_get_clean();
         }
 
@@ -229,7 +229,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             }
         }
 
-        $course = $DB->get_record('course', array('id' => $instance->courseid));
+        $course = $DB->get_record('course', ['id' => $instance->courseid]);
         $context = context_course::instance($course->id);
 
         // Pass $view=true to filter hidden caps if the user cannot see them.
@@ -255,11 +255,10 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
                 'isguestuser' => isguestuser(),
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $instance->currency),
                 'instanceid' => $instance->id,
-                'description' => get_string('purchasedescription', 'enrol_gwpayments',
-                    format_string($course->fullname, true, ['context' => $context])),
+                'description' => $this->get_payment_description(format_string($course->fullname, true, ['context' => $context])),
                 'successurl' => service_provider::get_success_url('gwpayments', $instance->id)->out(false),
             ];
-            $course = $DB->get_record('course', array('id' => $instance->courseid));
+            $course = $DB->get_record('course', ['id' => $instance->courseid]);
             $data->instanceid = $instance->id;
             $data->courseid = $instance->courseid;
             $data->userid = $USER->id;
@@ -280,6 +279,21 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
     }
 
     /**
+     * Make payment description.
+     * This is used in a HTML data attribute and will remove ALL single/double quotes.
+     *
+     * @param string $forstring
+     * @return string
+     */
+    protected function get_payment_description($forstring) {
+        $desc = get_string('purchasedescription', 'enrol_gwpayments', $forstring);
+        // Replace single AND double quotes.
+        $desc = str_replace('"', '', $desc);
+        $desc = str_replace("'", '', $desc);
+        return $desc;
+    }
+
+    /**
      * Restore instance and map settings.
      *
      * @param restore_enrolments_structure_step $step
@@ -292,13 +306,13 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         if ($step->get_task()->get_target() == backup::TARGET_NEW_COURSE) {
             $merge = false;
         } else {
-            $merge = array(
+            $merge = [
                 'courseid'   => $data->courseid,
                 'enrol'      => $this->get_name(),
                 'roleid'     => $data->roleid,
                 'cost'       => $data->cost,
                 'currency'   => $data->currency,
-            );
+            ];
         }
         if ($merge && $instances = $DB->get_records('enrol', $merge, 'id')) {
             $instance = reset($instances);
@@ -338,8 +352,10 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
      * @return array
      */
     protected function get_status_options() {
-        $options = array(ENROL_INSTANCE_ENABLED  => get_string('yes'),
-                         ENROL_INSTANCE_DISABLED => get_string('no'));
+        $options = [
+            ENROL_INSTANCE_ENABLED  => get_string('yes'),
+            ENROL_INSTANCE_DISABLED => get_string('no'),
+        ];
         return $options;
     }
 
@@ -369,16 +385,16 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
      */
     protected function get_cohort_options($instance, $context) {
         global $DB;
-        $cohorts = array(0 => get_string('no'));
+        $cohorts = [0 => get_string('no')];
         $allcohorts = cohort_get_available_cohorts($context, 0, 0, 0);
         if (property_exists($instance, 'customint5') && !isset($allcohorts[$instance->customint5]) &&
-                ($c = $DB->get_record('cohort', array('id' => $instance->customint5),
+                ($c = $DB->get_record('cohort', ['id' => $instance->customint5],
                         'id, name, idnumber, contextid, visible', IGNORE_MISSING))) {
             // Current cohort was not found because current user can not see it. Still keep it.
             $allcohorts[$instance->customint5] = $c;
         }
         foreach ($allcohorts as $c) {
-            $cohorts[$c->id] = format_string($c->name, true, array('context' => context::instance_by_id($c->contextid)));
+            $cohorts[$c->id] = format_string($c->name, true, ['context' => context::instance_by_id($c->contextid)]);
             if ($c->idnumber) {
                 $cohorts[$c->id] .= ' ['.s($c->idnumber).']';
             }
@@ -418,11 +434,11 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         }
         $mform->addHelpButton('customint1', 'paymentaccount', 'enrol_gwpayments');
 
-        $mform->addElement('text', 'cost', get_string('cost', 'enrol_gwpayments'), array('size' => 4));
+        $mform->addElement('text', 'cost', get_string('cost', 'enrol_gwpayments'), ['size' => 4]);
         $mform->setType('cost', PARAM_RAW);
         $mform->setDefault('cost', format_float($this->get_config('cost'), 2, true));
 
-        $mform->addElement('text', 'customint3', get_string('vat', 'enrol_gwpayments'), array('size' => 4));
+        $mform->addElement('text', 'customint3', get_string('vat', 'enrol_gwpayments'), ['size' => 4]);
         $mform->setType('customint3', PARAM_RAW);
         $mform->setDefault('customint3', intval($this->get_config('vat')));
         $mform->addHelpButton('customint3', 'vat', 'enrol_gwpayments');
@@ -440,12 +456,12 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         $mform->addElement('select', 'roleid', get_string('assignrole', 'enrol_gwpayments'), $roles);
         $mform->setDefault('roleid', $this->get_config('roleid'));
 
-        $durationoptions = array('optional' => true, 'defaultunit' => 86400);
+        $durationoptions = ['optional' => true, 'defaultunit' => 86400];
         $mform->addElement('duration', 'enrolperiod', get_string('enrolperiod', 'enrol_gwpayments'), $durationoptions);
         $mform->setDefault('enrolperiod', $this->get_config('enrolperiod'));
         $mform->addHelpButton('enrolperiod', 'enrolperiod', 'enrol_gwpayments');
 
-        $dateoptions = array('optional' => true);
+        $dateoptions = ['optional' => true];
         $mform->addElement('date_time_selector', 'enrolstartdate', get_string('enrolstartdate', 'enrol_gwpayments'), $dateoptions);
         $mform->setDefault('enrolstartdate', 0);
         $mform->addHelpButton('enrolstartdate', 'enrolstartdate', 'enrol_gwpayments');
@@ -464,17 +480,17 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             $mform->setConstant('customint5', 0);
         }
 
-        $expiryoptions = array(
+        $expiryoptions = [
             0 => get_string('no'),
             1 => get_string('expirynotifyenroller', 'core_enrol'),
             2 => get_string('expirynotifyall', 'core_enrol'),
-        );
+        ];
         $mform->addElement('select', 'expirynotify', get_string('expirynotify', 'core_enrol'), $expiryoptions);
         $mform->setDefault('expirynotify', $this->get_config('expirynotify'));
         $mform->addHelpButton('expirynotify', 'expirynotify', 'core_enrol');
 
         $mform->addElement('duration', 'expirythreshold', get_string('expirythreshold', 'core_enrol'),
-                array('optional' => false, 'defaultunit' => 86400));
+                ['optional' => false, 'defaultunit' => 86400]);
         $mform->setDefault('expirythreshold', $this->get_config('expirythreshold'));
         $mform->addHelpButton('expirythreshold', 'expirythreshold', 'core_enrol');
         $mform->disabledIf('expirythreshold', 'expirynotify', 'eq', 0);
@@ -497,7 +513,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
      * @return void
      */
     public function edit_instance_validation($data, $files, $instance, $context) {
-        $errors = array();
+        $errors = [];
 
         if (!empty($data['enrolenddate']) && $data['enrolenddate'] < $data['enrolstartdate']) {
             $errors['enrolenddate'] = get_string('enrolenddaterror', 'enrol_gwpayments');
@@ -522,7 +538,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         $validstatus = array_keys($this->get_status_options());
         $validcurrency = array_keys($this->get_possible_currencies());
         $validroles = array_keys($this->get_roleid_options($instance, $context));
-        $tovalidate = array(
+        $tovalidate = [
             'name' => PARAM_TEXT,
             'status' => $validstatus,
             'currency' => $validcurrency,
@@ -530,7 +546,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             'enrolperiod' => PARAM_INT,
             'enrolstartdate' => PARAM_INT,
             'enrolenddate' => PARAM_INT,
-        );
+        ];
 
         $typeerrors = $this->validate_param_types($data, $tovalidate);
         $errors = array_merge($errors, $typeerrors);
@@ -604,10 +620,11 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         }
         $context = context_course::instance($instance->courseid);
         if (has_capability('enrol/gwpayments:config', $context)) {
-            $managelink = new moodle_url('/enrol/editinstance.php', array(
+            $managelink = new moodle_url('/enrol/editinstance.php', [
                 'courseid' => $instance->courseid,
-                'id' => $instance->id, 'type' => 'gwpayments',
-            ));
+                'id' => $instance->id,
+                'type' => 'gwpayments',
+            ]);
             $instancesnode->add($this->get_instance_name($instance), $managelink, navigation_node::TYPE_SETTING);
 
             // If we allow coupons for this instance, we'll add a link to direct configuration.
@@ -622,18 +639,18 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
                 }
                 // Locate or add our own node if appropriate.
                 if (!$cagwpaymentsnode = $courseadminnode->get("cagwpayments")) {
-                    $nodeproperties = array(
+                    $nodeproperties = [
                         'text'          => get_string('pluginname', 'enrol_gwpayments'),
                         'shorttext'     => get_string('pluginname', 'enrol_gwpayments'),
                         'type'          => navigation_node::TYPE_CONTAINER,
                         'key'           => 'cagwpayments',
-                    );
+                    ];
                     $cagwpaymentsnode = new navigation_node($nodeproperties);
                     $courseadminnode->add_node($cagwpaymentsnode, 'users');
                 }
                 // Add coupon manager node.
                 $cagwpaymentsnode->add(get_string('coupons:manage', 'enrol_gwpayments'),
-                    new moodle_url('/enrol/gwpayments/couponmanager.php', array('cid' => $instance->courseid)),
+                    new moodle_url('/enrol/gwpayments/couponmanager.php', ['cid' => $instance->courseid]),
                     navigation_node::TYPE_CONTAINER, get_string('coupons:manage', 'enrol_gwpayments'),
                     'aiocoupons2', new pix_icon('coupons', '', 'enrol_gwpayments'));
             }
@@ -655,7 +672,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         }
 
         // Multiple instances supported - different cost for different roles.
-        return new moodle_url('/enrol/editinstance.php', array('courseid' => $courseid));
+        return new moodle_url('/enrol/editinstance.php', ['courseid' => $courseid]);
     }
 
     /**

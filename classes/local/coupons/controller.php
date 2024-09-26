@@ -22,8 +22,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -38,8 +38,8 @@ use stdClass;
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class controller {
@@ -101,7 +101,7 @@ class controller {
         $strnewform = '';
         if (has_capability('enrol/gwpayments:createcoupon', $this->page->context)) {
             $options = new stdClass();
-            $options->instance = (object) array('id' => 0);
+            $options->instance = (object) ['id' => 0];
             if ($this->page->course->id <> SITEID) {
                 $options->lockcourse = $this->page->course->id;
             }
@@ -149,7 +149,7 @@ class controller {
         $this->page->set_title($actionstr);
 
         $options = new stdClass();
-        $options->instance = (object) array('id' => 0);
+        $options->instance = (object) ['id' => 0];
         if ($this->page->course->id <> SITEID) {
             $options->lockcourse = $this->page->course->id;
         }
@@ -181,7 +181,7 @@ class controller {
         $posturl = $this->get_url(['action' => 'delete', 'id' => $id]);
         $redirect = optional_param('redirect', $this->get_url(), PARAM_LOCALURL);
 
-        $coupon = $DB->get_record('enrol_gwpayments_coupon', array('id' => $id));
+        $coupon = $DB->get_record('enrol_gwpayments_coupon', ['id' => $id]);
         $deleteform = new \enrol_gwpayments\local\coupons\coupondelete($posturl, $coupon);
         $deleteform->process_post($redirect);
 

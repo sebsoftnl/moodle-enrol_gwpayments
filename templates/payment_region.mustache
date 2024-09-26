@@ -64,7 +64,7 @@
 </b></p>
 <p id="enrol-gwpayments-coupondiscount"></p>
 <p>
-    <label for="id_coupon"><input type="text" name="coupon" id="id_coupon" data-courseid="{{courseid}}" data-instanceid="{{instanceid}}"/> {{#str}}couponcode, enrol_gwpayments{{/str}}</label>
+    <label for="id_coupon"><input type="text" autocomplete="off" name="coupon" id="id_coupon" data-courseid="{{courseid}}" data-instanceid="{{instanceid}}"/> {{#str}}couponcode, enrol_gwpayments{{/str}}</label>
 <a href="#" id="btncheckcoupon">{{#str}}checkcode, enrol_gwpayments{{/str}}</a>
 </p>
 {{/enablecoupon}}
@@ -78,7 +78,7 @@
             data-itemid="{{instanceid}}"
             data-cost="{{cost}}"
             data-successurl="{{successurl}}"
-            data-description={{# quote }}{{description}}{{/ quote }}
+            data-description="{{description}}"
         >
             {{# str }} sendpaymentbutton, enrol_gwpayments {{/ str }}
         </button>

@@ -22,8 +22,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -41,8 +41,8 @@ use pix_icon;
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class coupontable extends \table_sql {
@@ -105,12 +105,12 @@ class coupontable extends \table_sql {
      * @return array list of view types
      */
     public static function get_viewtypes() {
-        return array(
+        return [
             self::ALL,
             self::EXPIRED,
             self::USED,
             self::UNUSED,
-        );
+        ];
     }
 
     /**
@@ -120,7 +120,7 @@ class coupontable extends \table_sql {
      * @return array list of view types
      */
     public static function get_viewtype_menu($url) {
-        $rs = array();
+        $rs = [];
         foreach (self::get_viewtypes() as $type) {
             $murl = clone $url;
             $murl->param('listtype', $type);
@@ -140,7 +140,7 @@ class coupontable extends \table_sql {
      * @param array $params
      * @throws exception
      */
-    public function set_sql($fields, $from, $where, array $params = null) {
+    public function set_sql($fields, $from, $where, array $params = []) {
         // We'll disable this method.
         throw new exception('err:statustable:set_sql');
     }
@@ -177,9 +177,9 @@ class coupontable extends \table_sql {
      * @param bool $useinitialsbar
      */
     protected function render_all($pagesize, $useinitialsbar = true) {
-        $this->define_columns(array('courseid', 'code', 'type', 'value', 'status',
-            'validfrom', 'validto', 'numused', 'maxusage', 'action'));
-        $this->define_headers(array(
+        $this->define_columns(['courseid', 'code', 'type', 'value', 'status',
+            'validfrom', 'validto', 'numused', 'maxusage', 'action']);
+        $this->define_headers([
             get_string('th:courseid', 'enrol_gwpayments'),
             get_string('th:code', 'enrol_gwpayments'),
             get_string('th:type', 'enrol_gwpayments'),
@@ -189,11 +189,11 @@ class coupontable extends \table_sql {
             get_string('th:validto', 'enrol_gwpayments'),
             get_string('th:numused', 'enrol_gwpayments'),
             get_string('th:maxusage', 'enrol_gwpayments'),
-            get_string('th:action', 'enrol_gwpayments'))
-        );
+            get_string('th:action', 'enrol_gwpayments'),
+        ]);
         $fields = 'c.*,NULL AS action';
-        $where = array();
-        $params = array();
+        $where = [];
+        $params = [];
         if ($this->courseid > 0) {
             $where[] = 'c.courseid = ?';
             $params[] = $this->courseid;
@@ -251,7 +251,7 @@ class coupontable extends \table_sql {
         if ($row->courseid == 0) {
             return get_string('entiresite', 'enrol_gwpayments');
         } else {
-            return $DB->get_field('course', 'fullname', array('id' => $row->courseid));
+            return $DB->get_field('course', 'fullname', ['id' => $row->courseid]);
         }
     }
 
@@ -342,10 +342,10 @@ class coupontable extends \table_sql {
      */
     public function col_action($row) {
         global $PAGE, $OUTPUT;
-        $actions = array();
+        $actions = [];
         if (has_capability('enrol/gwpayments:deletecoupon', $PAGE->context)) {
             $actions[] = $OUTPUT->action_icon(
-                    new moodle_url($this->baseurl, array('action' => 'delete', 'id' => $row->id)),
+                    new moodle_url($this->baseurl, ['action' => 'delete', 'id' => $row->id]),
                     new pix_icon('i/delete', get_string('coupon:delete', 'enrol_gwpayments'), 'moodle', ['class' => 'icon']),
                     null,
                     ['alt' => get_string('coupon:delete', 'enrol_gwpayments')],
@@ -354,7 +354,7 @@ class coupontable extends \table_sql {
         }
         if (has_capability('enrol/gwpayments:editcoupon', $PAGE->context)) {
             $actions[] = $OUTPUT->action_icon(
-                    new moodle_url($this->baseurl, array('action' => 'edit', 'id' => $row->id)),
+                    new moodle_url($this->baseurl, ['action' => 'edit', 'id' => $row->id]),
                     new pix_icon('i/edit', get_string('coupon:edit', 'enrol_gwpayments'), 'moodle', ['class' => 'icon']),
                     null,
                     ['alt' => get_string('coupon:edit', 'enrol_gwpayments')],

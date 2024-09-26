@@ -22,15 +22,15 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * */
 defined('MOODLE_INTERNAL') || die;
 
-$tasks = array(
-    array(
+$tasks = [
+    [
         'classname' => 'enrol_gwpayments\task\defaulttasks',
         'blocking'  => 0,
         'minute'    => '*',
@@ -38,8 +38,8 @@ $tasks = array(
         'day'       => '*',
         'dayofweek' => '*',
         'month'     => '*',
-    ),
-    array(
+    ],
+    [
         'classname' => '\enrol_manual\task\send_expiry_notifications',
         'blocking' => 0,
         'minute' => '*/10',
@@ -48,5 +48,5 @@ $tasks = array(
         'month' => '*',
         'dayofweek' => '*',
         'disabled' => 0,
-    ),
-);
+    ],
+];

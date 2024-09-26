@@ -22,11 +22,11 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$string['pluginname'] = 'PaymentS Enrolment';
+$string['pluginname'] = 'Payments Enrolment';
 $string['pluginname_help'] = 'This plugin allows you to purchase a course with Moodle\'s core payment gateways
 and incorporates possibilities for coupon/voucher based discounts';
 $string['promo'] = 'PaymentS enrolment plugin for Moodle';
@@ -161,6 +161,8 @@ $string['gwpayments:unenrolself'] = 'Self unenrolment for gwpayment enrolments';
 $string['gwpayments:createcoupon'] = 'Delete coupon/voucher codes for gwpayment enrolments';
 $string['gwpayments:editcoupon'] = 'Edit coupon/voucher codes for gwpayment enrolments';
 $string['gwpayments:deletecoupon'] = 'Delete coupon/voucher codes for gwpayment enrolments';
+$string['messageprovider:expiry_notification'] = 'Enrolment expiry notification';
+$string['messageprovider:gwpayments_enrolment'] = 'GWPayments enrolment notification';
 $string['event:order:delivered'] = 'Order delivered/enrolment created';
 $string['unenrolselfconfirm'] = 'Do you really want to unenrol yourself from course "{$a}"?';
 $string['costerror'] = 'Cost must be defined as a numeric/floating point value';

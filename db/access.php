@@ -22,65 +22,63 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-    'enrol/gwpayments:config' => array(
+$capabilities = [
+    'enrol/gwpayments:config' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
-        ),
-    ),
-    'enrol/gwpayments:manage' => array(
+        ],
+    ],
+    'enrol/gwpayments:manage' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-        ),
-    ),
-    'enrol/gwpayments:unenrol' => array(
+        ],
+    ],
+    'enrol/gwpayments:unenrol' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
-        ),
-    ),
-    'enrol/gwpayments:unenrolself' => array(
+        ],
+    ],
+    'enrol/gwpayments:unenrolself' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
-        ),
-    ),
+        'archetypes' => [],
+    ],
 
-    'enrol/gwpayments:createcoupon' => array(
+    'enrol/gwpayments:createcoupon' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
-        ),
-    ),
-    'enrol/gwpayments:editcoupon' => array(
+        ],
+    ],
+    'enrol/gwpayments:editcoupon' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
-        ),
-    ),
-    'enrol/gwpayments:deletecoupon' => array(
+        ],
+    ],
+    'enrol/gwpayments:deletecoupon' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => array(
+        'archetypes' => [
             'manager' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
-        ),
-    ),
-
-);
+        ],
+    ],
+];

@@ -22,8 +22,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   Ing. R.J. van Dongen
- * @author      R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2019 RvD <helpdesk@sebsoft.nl>
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -41,8 +41,8 @@ use core_payment\helper as payment_helper;
  *
  * @package     enrol_gwpayments
  *
- * @copyright   Ing. R.J. van Dongen
- * @author      R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright  2019 RvD <helpdesk@sebsoft.nl>
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements

@@ -22,8 +22,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -35,8 +35,8 @@ use enrol_gwpayments\exception;
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class helper {
@@ -88,18 +88,32 @@ class helper {
     }
 
     /**
+     * Get known session coupon data.
+     *
+     * @return stdClass|null
+     */
+    public static function get_session_coupon() {
+        global $SESSION;
+        if (!static::has_session_coupon()) {
+            return null;
+        }
+        return $SESSION->enrol_gwpayments_coupon;
+    }
+
+    /**
      * Use the coupon in the session.
      *
      * @param int $paymentid not used yet, but here for future usage.
      * @return void
      */
-    public static function use_session_coupon(int $paymentid = null) {
+    public static function use_session_coupon(int $paymentid = 0) {
         global $DB, $SESSION;
         if (static::has_session_coupon()) {
             $couponrecord = static::get_coupon($SESSION->enrol_gwpayments_coupon->code);
             if (is_object($couponrecord)) {
                 $sql = 'UPDATE  {enrol_gwpayments_coupon} SET numused = numused + 1, timemodified = ? WHERE id = ?';
                 $DB->execute($sql, [time(), $couponrecord->id]);
+
             }
             static::clear_session_coupon();
         }
@@ -115,7 +129,12 @@ class helper {
     public static function apply_stored_coupon_on_cost($amount) {
         global $SESSION;
         if (!isset($SESSION->enrol_gwpayments_coupon)) {
-            return $amount;
+            return (object)[
+                'price' => $amount,
+                'newprice' => $amount,
+                'discount' => 0,
+                'percentage' => 0,
+            ];
         }
 
         $applydata = $SESSION->enrol_gwpayments_coupon;
@@ -144,7 +163,76 @@ class helper {
         }
 
         $newprice = unformat_float(format_float($amount - $discount, 2, true));
-        return $newprice;
+        return (object)[
+            'price' => $amount,
+            'newprice' => $newprice,
+            'discount' => $discount,
+            'percentage' => $percentage,
+        ];
+    }
+
+    /**
+     * Track coupon usage
+     *
+     * @param int $enrolid
+     * @param int $courseid
+     * @param int $userid
+     * @param string $code
+     * @param float $realdiscountvalue
+     * @param int $paymentid
+     * @param int $verified
+     */
+    public static function track_coupon_usage(int $enrolid, int $courseid, int $userid,
+            string $code, float $realdiscountvalue = 0, int $paymentid = 0, int $verified = 0) {
+        global $DB;
+        $coupon = $DB->get_record('enrol_gwpayments_coupon', ['code' => $code]);
+        $coupondata = clone $coupon;
+        unset($coupondata->maxusage, $coupondata->numused, $coupondata->timecreated, $coupondata->timemodified);
+        $enrol = $DB->get_record('enrol', ['id' => $enrolid]);
+        $record = (object)[
+            'id' => 0,
+            'enrolid' => $enrolid,
+            'courseid' => $courseid,
+            'userid' => $userid,
+            'paymentid' => $paymentid,
+            'couponid' => $coupon->id,
+            'verified' => $verified,
+            'code' => $coupon->code,
+            'typ' => $coupon->typ,
+            'value' => $coupon->value,
+            'discount' => $realdiscountvalue,
+            'originalcost' => is_null($enrol->cost) ? 0 : $enrol->cost,
+            'coupondata' => json_encode($coupondata),
+            'timecreated' => time(),
+            'timemodified' => time(),
+        ];
+
+        $record->id = $DB->insert_record('enrol_gwpayments_cusage', $record);
+    }
+
+    /**
+     * Mark tracked coupon usage as verified
+     *
+     * @param int $enrolid
+     * @param int $courseid
+     * @param int $userid
+     * @param int $paymentid
+     */
+    public static function verify_tracked_coupon_usage(int $enrolid, int $courseid, int $userid, int $paymentid) {
+        global $DB;
+        $record = $DB->get_record('enrol_gwpayments_cusage', [
+            'enrolid' => $enrolid,
+            'courseid' => $courseid,
+            'userid' => $userid,
+        ]);
+        if (is_object($record)) {
+            $record->paymentid = $paymentid;
+            $record->verified = 1;
+            $record->timemodified = time();
+            $DB->update_record('enrol_gwpayments_cusage', $record);
+            return true;
+        }
+        return false;
     }
 
     /**

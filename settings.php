@@ -22,10 +22,9 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  */
 defined('MOODLE_INTERNAL') || die();
 
@@ -62,16 +61,16 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox('enrol_gwpayments/mailadmins',
             get_string('mailadmins', 'enrol_gwpayments'), '', 0));
 
-    $options = array(
+    $options = [
         ENROL_EXT_REMOVED_KEEP => get_string('extremovedkeep', 'enrol'),
         ENROL_EXT_REMOVED_SUSPENDNOROLES => get_string('extremovedsuspendnoroles', 'enrol'),
         ENROL_EXT_REMOVED_UNENROL => get_string('extremovedunenrol', 'enrol'),
-    );
+    ];
     $settings->add(new admin_setting_configselect('enrol_gwpayments/expiredaction',
             get_string('expiredaction', 'enrol_gwpayments'), get_string('expiredaction_help', 'enrol_gwpayments'),
             ENROL_EXT_REMOVED_SUSPENDNOROLES, $options));
 
-    $options = array();
+    $options = [];
     for ($i = 0; $i < 24; $i++) {
         $options[$i] = $i;
     }
@@ -82,10 +81,10 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_heading('enrol_gwpayments_defaults',
             get_string('enrolinstancedefaults', 'admin'), get_string('enrolinstancedefaults_desc', 'admin')));
 
-    $optionsyesno = array(
+    $optionsyesno = [
         ENROL_INSTANCE_ENABLED => get_string('yes'),
         ENROL_INSTANCE_DISABLED => get_string('no'),
-    );
+    ];
     $settings->add(new admin_setting_configselect('enrol_gwpayments/status', get_string('status', 'enrol_gwpayments'),
             get_string('status_help', 'enrol_gwpayments'), ENROL_INSTANCE_DISABLED, $optionsyesno));
     $settings->add(new admin_setting_configtext('enrol_gwpayments/cost', get_string('cost', 'enrol_gwpayments'),
@@ -112,11 +111,11 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configduration('enrol_gwpayments/enrolperiod',
             get_string('enrolperiod', 'enrol_gwpayments'), get_string('enrolperiod_help', 'enrol_gwpayments'), 0));
 
-    $options = array(
+    $options = [
         0 => get_string('no'),
         1 => get_string('expirynotifyenroller', 'core_enrol'),
         2 => get_string('expirynotifyall', 'core_enrol'),
-    );
+    ];
     $settings->add(new admin_setting_configselect('enrol_gwpayments/expirynotify',
             get_string('expirynotify', 'core_enrol'),
             get_string('expirynotify_help', 'core_enrol'), 0, $options));
@@ -136,5 +135,5 @@ if ($hassiteconfig) {
     $node = new admin_category('gwpayments', get_string('pluginname', 'enrol_gwpayments'));
     $ADMIN->add('root', $node);
     $ADMIN->add('gwpayments', new admin_externalpage('aiocoupons', get_string('coupons:manage', 'enrol_gwpayments'),
-            new moodle_url('/enrol/gwpayments/couponmanager.php', array('page' => 'aiocoupons'))));
+            new moodle_url('/enrol/gwpayments/couponmanager.php', ['page' => 'aiocoupons'])));
 }

@@ -1,3 +1,13 @@
+Version 1.0.9 build 2024092300
+* Resolved #1 - plugin naming.
+* Resolved #13 - error when deleting coupon.
+* Resolved #16 - Fix payment description (do not {{quote}}, wasn't this already done?).
+* Resolved #17 - Add missing strings for message providers.
+* Resolved #20 - discount not working > 999 (changed decimal size to 9,3).
+* Changed pagelayout in couponmanager to 'admin' for a wider view.
+* Added coupon usage tracking table. This is NOT foolproof due to the nature of Moodle's payment subsystem.
+* Add autocomplete="off" to coupon input to prevent remembering former input.
+
 Version 1.0.8 build 2024060400
 * Thank you https://github.com/dreblen for providing a patch to fix issue 18.
 * Thank you https://github.com/dreblen for providing a hint on the actual issue of issue 19.

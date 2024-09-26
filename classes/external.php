@@ -22,8 +22,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -44,8 +44,8 @@ require_once($CFG->libdir . '/externallib.php');
 /**
  * All-in-one enrolment plugin services.
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class external extends external_api {
@@ -78,7 +78,7 @@ class external extends external_api {
         }
 
         try {
-            $coupon = $DB->get_record('enrol_gwpayments_coupon', array('code' => $params['couponcode']));
+            $coupon = $DB->get_record('enrol_gwpayments_coupon', ['code' => $params['couponcode']]);
             if (!$coupon) {
                 throw new exception('coupon:invalid');
             } else {
@@ -125,12 +125,23 @@ class external extends external_api {
                 if ((bool) get_config('enrol_gwpayments', 'enablebypassinggateway')) {
                     // Force coupon in session so it's code will be "used".
                     local\helper::store_session_coupon($coupon->code, $coupon->courseid, $enrol->id);
-                    // Free pass! Perform delivery of order BUT with 0 as payment id.
-                    payment\service_provider::deliver_order('fee', $enrol->id, 0, $USER->id);
+
+                    // Free pass! Perform delivery of order.
+                    // We WILL force a dummy payment.
+                    $payable = payment\service_provider::get_payable('fee', $instanceid);
+                    $paymentid = \core_payment\helper::save_payment($payable->get_account_id(), 'enrol_gwpayments', 'fee',
+                            $enrol->id, $USER->id, $rs->newprice, 'EUR', 'DUMMY');
+
+                    payment\service_provider::deliver_order('fee', $enrol->id, $paymentid, $USER->id);
+
                     // Set variables.
                     $rs->freepass = true;
                     $rs->freepassredirect = payment\service_provider::get_success_url('fee', $enrol->id)->out(false);
                     \core\notification::success(get_string('enrolfreepass', 'enrol_gwpayments'));
+                } else {
+                    // Force coupon in session so it's code will be "used".
+                    // This WILL crash most payment gateways.
+                    local\helper::store_session_coupon($coupon->code, $coupon->courseid, $enrol->id);
                 }
             } else {
                 // Please do NOT forget to stuff this in the session.
@@ -195,8 +206,8 @@ class external extends external_api {
     public static function find_courses($query) {
         global $DB;
 
-        $where = array();
-        $qparams = array();
+        $where = [];
+        $qparams = [];
         // Dont include the SITE.
         $where[] = 'c.id <> ' . SITEID;
         $where[] = 'c.visible = 1';
@@ -224,7 +235,7 @@ class external extends external_api {
             $courses[] = (object)[
                 'id' => $course->id,
                 'name' => $course->shortname . (empty($course->idnumber) ? '' : ' ('.$course->idnumber.')'),
-                ];
+            ];
         }
         $rs->close();
 
@@ -237,10 +248,10 @@ class external extends external_api {
      * @return external_function_parameters
      */
     public static function find_courses_parameters() {
-        return new external_function_parameters(array(
+        return new external_function_parameters([
             'query' => new external_value(PARAM_TEXT,
                     'search string', VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
-        ));
+        ]);
     }
 
     /**
@@ -250,12 +261,10 @@ class external extends external_api {
      */
     public static function find_courses_returns() {
         return new external_multiple_structure(
-            new external_single_structure(
-                array(
+            new external_single_structure([
                     'id' => new external_value(PARAM_INT, 'course id'),
                     'name' => new external_value(PARAM_TEXT, 'name'),
-                )
-            )
+            ])
         );
     }
 

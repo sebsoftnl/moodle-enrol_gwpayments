@@ -22,8 +22,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -42,7 +42,7 @@ if ($cid > 0) {
     $pageparams['cid'] = $cid;
     require_course_login($cid);
     $PAGE->set_context(context_course::instance($cid));
-    $PAGE->set_course($DB->get_record('course', array('id' => $cid)));
+    $PAGE->set_course($DB->get_record('course', ['id' => $cid]));
 } else {
     require_login();
     $PAGE->set_context(context_system::instance());
@@ -54,7 +54,7 @@ require_capability('enrol/gwpayments:config', $PAGE->context);
 $PAGE->set_url($pageurl);
 $PAGE->set_heading(get_string('coupons:manage', 'enrol_gwpayments'));
 $PAGE->set_title(get_string('coupons:manage', 'enrol_gwpayments'));
-$PAGE->set_pagelayout('standard');
+$PAGE->set_pagelayout('admin');
 $PAGE->navbar->add(get_string('pluginname', 'enrol_gwpayments'));
 
 // Since out page url is not at all 100% the same at all times we override the active url.

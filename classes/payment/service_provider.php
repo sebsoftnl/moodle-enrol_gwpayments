@@ -22,8 +22,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -36,8 +36,8 @@ use enrol_gwpayments\local\helper;
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class service_provider implements \core_payment\local\callback\service_provider {
@@ -62,7 +62,13 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         // See if we have a valid "coupon record" or any other need to modify our data.
         try {
-            $result->amount = helper::apply_stored_coupon_on_cost($result->amount);
+            $proc = helper::apply_stored_coupon_on_cost($result->amount);
+            $result->amount = $proc->newprice;
+            // Append extra data.
+            $result->discount = $proc->discount;
+            $result->percentage = $proc->percentage;
+            $result->price = $proc->price;
+            $result->newprice = $proc->newprice;
         } catch (\Exception $e) {
             debugging($e->getMessage(), DEBUG_DEVELOPER);
         }
@@ -80,7 +86,7 @@ class service_provider implements \core_payment\local\callback\service_provider 
      * @return \core_payment\local\entities\payable
      */
     public static function get_payable(string $paymentarea, int $instanceid): \core_payment\local\entities\payable {
-        global $DB;
+        global $DB, $USER;
 
         $instance = $DB->get_record('enrol', ['enrol' => 'gwpayments', 'id' => $instanceid], '*', MUST_EXIST);
 
@@ -133,6 +139,12 @@ class service_provider implements \core_payment\local\callback\service_provider 
         // This is somewhat nasty because it's not fool-proof (payments can come in MUCH later).
         // Use coupon if in session.
         if (helper::has_session_coupon()) {
+            // We wish to track code usage here.
+            $cpdata = helper::get_session_coupon();
+            $payabledata = static::generate_payabledata($instance, $paymentarea, $instanceid);
+            helper::track_coupon_usage($instance->id, $instance->courseid, $userid,
+                    $cpdata->code, $payabledata->discount, $paymentid, 1);
+
             helper::use_session_coupon($paymentid);
         }
 

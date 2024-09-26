@@ -22,8 +22,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -38,8 +38,8 @@ require_once($CFG->libdir . '/formslib.php');
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class coupondelete extends \moodleform {
@@ -51,7 +51,7 @@ class coupondelete extends \moodleform {
         global $DB;
         $a = $this->_customdata;
         if ($a->courseid > 0) {
-            $a->course = $DB->get_field('course', 'fullname', array('id' => $a->courseid));
+            $a->course = $DB->get_field('course', 'fullname', ['id' => $a->courseid]);
         } else {
             $a->course = get_string('entiresite', 'enrol_gwpayments');
         }
@@ -78,7 +78,7 @@ class coupondelete extends \moodleform {
         if (!$this->process_post($redirect)) {
             echo $OUTPUT->header();
             echo '<div class="enrol-gwpayments-container">';
-            $this->set_data(array('id' => $id));
+            $this->set_data(['id' => $id]);
             $this->display();
             echo '</div>';
             echo $OUTPUT->footer();
@@ -100,7 +100,7 @@ class coupondelete extends \moodleform {
             return false;
         }
         global $DB;
-        $DB->delete_records('enrol_gwpayments_coupon', array('id' => $this->_customdata->id));
+        $DB->delete_records('enrol_gwpayments_coupon', ['id' => $this->_customdata->id]);
         redirect($redirect, get_string('coupon:deleted', 'enrol_gwpayments'));
     }
 

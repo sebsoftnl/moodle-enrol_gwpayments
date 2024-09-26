@@ -22,8 +22,8 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -38,8 +38,8 @@ require_once($CFG->libdir . '/formslib.php');
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class couponform extends \moodleform {
@@ -84,10 +84,10 @@ class couponform extends \moodleform {
         $mform->addElement('date_selector', 'validto', get_string('validto', 'enrol_gwpayments'));
         $mform->addRule('validto', get_string('validtomissing', 'enrol_gwpayments'), 'required', null, 'client');
 
-        $types = array(
+        $types = [
             'percentage' => get_string('coupontype:percentage', 'enrol_gwpayments'),
             'value' => get_string('coupontype:value', 'enrol_gwpayments'),
-        );
+        ];
         $mform->addElement('select', 'type', get_string('coupontype', 'enrol_gwpayments'), $types);
         $mform->setDefault('type', 'percentage');
         $mform->setType('type', PARAM_ALPHA);
@@ -99,7 +99,7 @@ class couponform extends \moodleform {
 
         $mform->addElement('text', 'maxusage', get_string('maxusage', 'enrol_gwpayments'), 'maxlength="6" size="6"');
         $mform->addRule('maxusage', null, 'numeric', null, 'client');
-        $mform->addRule('maxusage', null, 'rangelength', array(1, 6), 'client');
+        $mform->addRule('maxusage', null, 'rangelength', [1, 6], 'client');
         $mform->setType('maxusage', PARAM_TEXT);
         $mform->setDefault('maxusage', 0);
         $mform->addHelpButton('maxusage', 'maxusage', 'enrol_gwpayments');
@@ -120,7 +120,7 @@ class couponform extends \moodleform {
         $errors = parent::validation($data, $files);
 
         if ((int)$data['id'] === 0) {
-            if ($DB->record_exists('enrol_gwpayments_coupon', array('code' => $data['code']))) {
+            if ($DB->record_exists('enrol_gwpayments_coupon', ['code' => $data['code']])) {
                 $errors['code'] = get_string('couponcodeexists', 'enrol_gwpayments');
             }
         }

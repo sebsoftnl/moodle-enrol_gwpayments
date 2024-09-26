@@ -22,11 +22,11 @@
  *
  * @package     enrol_gwpayments
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
+ * @copyright   2021 RvD
+ * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$string['pluginname'] = 'PaymentS Aanmelding';
+$string['pluginname'] = 'Payments Aanmelding';
 $string['pluginname_help'] = 'This plugin allows you to purchase a course with Moodle\'s core payment gateways
 and incorporates possibilities for coupon/voucher based discounts';
 $string['promo'] = 'PaymentS aanmeldplugin voor Moodle';
@@ -179,3 +179,6 @@ Je kunt hier omheen werken door zelf of door de systeembeheerder (voor deze plug
 de payment gateways <i>omzeilt></i> worden voor nulbetalingen (in de globale instellingen van deze aanmeldmethode).
 De cursusaanmelding zal dan gedaan worden zonder tussenkomst van de betaalmogelijkheden.
 Er zal dan een referentie van 0 gebruikt worden voor de (voor Moodle interne) betaalreferentie.';
+$string['disableifmoodleapp'] = 'Betalingen uitschakelen in Moodle App?';
+$string['disableifmoodleapp_help'] = 'Indien aangevinkt zullen eindgebruikers een melding krijgen dat ze vie de browser moeten inloggen op het LMS om betalingen te kunnen doen';
+$string['warn:disabledifmoodleapp'] = 'Betalingen kunnen enkel vanuit de browser worden gedaan. Log aub in op het LMS met een browser op de computer/laptop om de betaling te kunnen doen.';
