@@ -73,6 +73,8 @@ function xmldb_enrol_gwpayments_upgrade($oldversion) {
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
         }
+
+        upgrade_plugin_savepoint(true, 2024090100, 'enrol', 'gwpayments');
     }
 
     return true;
