@@ -25,7 +25,8 @@
  * @copyright   2021 RvD
  * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */$string['assignrole'] = 'Assign role';
+ */
+$string['assignrole'] = 'Assign role';
 $string['backtolist'] = 'Back to overview';
 $string['checkcode'] = 'Check coupon code';
 $string['cost'] = 'Enrol cost';

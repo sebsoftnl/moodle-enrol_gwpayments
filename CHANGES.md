@@ -1,3 +1,8 @@
+Version 1.2.0 build 2024121900
+* Change namespacing as per MDL-76583
+* Fix (github) issue #23
+* Minimum Moodle version: 4.2
+
 Version 1.0.9 build 2024092300
 * Resolved #1 - plugin naming.
 * Resolved #13 - error when deleting coupon.

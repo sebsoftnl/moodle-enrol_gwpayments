@@ -29,17 +29,13 @@
 
 namespace enrol_gwpayments;
 
-defined('MOODLE_INTERNAL') || die();
-
-use external_api;
-use external_function_parameters;
-use external_value;
-use external_single_structure;
-use external_multiple_structure;
+use core_external\external_api;
+use core_external\external_function_parameters;
+use core_external\external_value;
+use core_external\external_single_structure;
+use core_external\external_multiple_structure;
 use stdClass;
 use exception;
-
-require_once($CFG->libdir . '/externallib.php');
 
 /**
  * All-in-one enrolment plugin services.
@@ -193,7 +189,7 @@ class external extends external_api {
                 'html' => new external_value(PARAM_RAW, 'HTML formatted replacement for the new cost'),
                 'freepass' => new external_value(PARAM_BOOL, 'Whether or not a free pass was granted', VALUE_OPTIONAL),
                 'freepassredirect' => new external_value(PARAM_LOCALURL, 'Free pass redirect URL', VALUE_OPTIONAL),
-            ], 'response data', false),
+            ], 'response data', VALUE_OPTIONAL),
         ]);
     }
 
