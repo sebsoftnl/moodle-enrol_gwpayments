@@ -136,4 +136,6 @@ if ($hassiteconfig) {
     $ADMIN->add('root', $node);
     $ADMIN->add('gwpayments', new admin_externalpage('aiocoupons', get_string('coupons:manage', 'enrol_gwpayments'),
             new moodle_url('/enrol/gwpayments/couponmanager.php', ['page' => 'aiocoupons'])));
+    $ADMIN->add('gwpayments', new admin_externalpage('aiousage', get_string('report:cusage', 'enrol_gwpayments'),
+            new moodle_url('/enrol/gwpayments/report.php')));
 }

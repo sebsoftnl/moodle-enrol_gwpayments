@@ -266,6 +266,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             $data->currency = $instance->currency;
             $data->cost = $cost;
             $data->vat = (int)$instance->customint3;
+            $data->hasvat = !empty($data->vat);
             $data->instancename = $this->get_instance_name($instance);
             $data->localisedcost = format_float($cost, 2, true);
             $data->coursename = $course->fullname;
@@ -651,8 +652,13 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
                 // Add coupon manager node.
                 $cagwpaymentsnode->add(get_string('coupons:manage', 'enrol_gwpayments'),
                     new moodle_url('/enrol/gwpayments/couponmanager.php', ['cid' => $instance->courseid]),
-                    navigation_node::TYPE_CONTAINER, get_string('coupons:manage', 'enrol_gwpayments'),
+                    navigation_node::TYPE_CUSTOM, get_string('coupons:manage', 'enrol_gwpayments'),
                     'aiocoupons2', new pix_icon('coupons', '', 'enrol_gwpayments'));
+                // Add coupon usage node.
+                $cagwpaymentsnode->add(get_string('report:cusage', 'enrol_gwpayments'),
+                    new moodle_url('/enrol/gwpayments/report.php', ['courseid' => $instance->courseid]),
+                    navigation_node::TYPE_CUSTOM, get_string('report:cusage', 'enrol_gwpayments'),
+                    'aiocusage2', new pix_icon('coupons', '', 'enrol_gwpayments'));
             }
         }
     }

@@ -111,7 +111,7 @@ $string['gwpayments:editcoupon'] = 'Coupon/voucher codes voor gwpayment aanmeldi
 $string['gwpayments:manage'] = 'gwpayment aanmeldingen beheren';
 $string['gwpayments:unenrol'] = 'gwpayment aanmeldingen annuleren';
 $string['gwpayments:unenrolself'] = 'Zelf afmelden van gwpayment aanmeldingen';
-$string['gwpayments:unenrolselfconfirm'] = 'Zelf afmelden van gwpayment aanmeldingen';
+$string['gwpayments:unenrolselfconfirm'] = 'Wil je je echt afmelden van een betaalde aanmelding?';
 $string['mailadmins'] = 'E-mail admin';
 $string['mailstudents'] = 'E-mail studenten';
 $string['mailteachers'] = 'E-mail leraren';
@@ -132,6 +132,7 @@ $string['promodesc'] = 'Deze plugin is geschreven door Sebsoft Managed Hosting &
 (<a href=\'http://www.sebsoft.nl/\' target=\'_new\'>http://sebsoft.nl</a>).<br /><br />
 {$a}<br /><br />';
 $string['purchasedescription'] = 'Aanmelding in cursus {$a}';
+$string['report:cusage'] = 'Coupon gebruik rapportage';
 $string['sendpaymentbutton'] = 'Selecteer betaalmethode';
 $string['status'] = 'Toestaan gateway payments inschrijvingen';
 $string['status_desc'] = 'Sta gebruikers toe om gateway payments gebruiken om in te schrijven in een cursus standaard.';

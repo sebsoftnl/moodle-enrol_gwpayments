@@ -59,9 +59,11 @@
         <p>{{# str }} paymentrequired {{/ str}}</p>
 <p id="enrol-gwpayments-basecost"><b>{{#str}}cost{{/str}}: {{currency}} {{localisedcost}}</b></p>
 {{#enablecoupon}}
+{{#hasvat}}
 <p><b>
 {{#str}}vat, enrol_gwpayments{{/str}}: {{vat}}%
 </b></p>
+{{/hasvat}}
 <p id="enrol-gwpayments-coupondiscount"></p>
 <p>
     <label for="id_coupon"><input type="text" autocomplete="off" name="coupon" id="id_coupon" data-courseid="{{courseid}}" data-instanceid="{{instanceid}}"/> {{#str}}couponcode, enrol_gwpayments{{/str}}</label>

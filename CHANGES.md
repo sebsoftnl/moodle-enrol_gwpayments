@@ -1,3 +1,8 @@
+Version 1.3.0 build 2025070900
+* Hide VAT if 0%
+* Add coupon usage table
+* Supports Moodle 4.2, 4.3 and 4.4
+
 Version 1.2.0 build 2024121900
 * Change namespacing as per MDL-76583
 * Fix (github) issue #23
