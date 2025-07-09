@@ -1,3 +1,6 @@
+Version 1.4.0 build 2025070901
+* Support for Moodle 4.5+
+
 Version 1.3.0 build 2025070900
 * Hide VAT if 0%
 * Add coupon usage table

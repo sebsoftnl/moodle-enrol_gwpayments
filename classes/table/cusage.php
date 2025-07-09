@@ -29,11 +29,9 @@
 
 namespace enrol_gwpayments\table;
 
-defined('MOODLE_INTERNAL') || die();
-require_once($CFG->libdir . '/tablelib.php');
-
 use lang_string;
 use moodle_url;
+use core_table\sql_table;
 
 /**
  * overview dynamic table.
@@ -44,7 +42,7 @@ use moodle_url;
  * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class cusage extends \table_sql implements \core_table\dynamic {
+class cusage extends sql_table implements \core_table\dynamic {
 
     /**
      * @var \context
@@ -59,8 +57,8 @@ class cusage extends \table_sql implements \core_table\dynamic {
         $uniqueid = 'enrol_gwpayments_table_cusage' . $USER->id;
         parent::__construct($uniqueid);
 
-        $this->no_sorting('action');
         $this->collapsible(false);
+        $this->sortable(true, 'timecreated', SORT_DESC);
         $this->useridfield = 'userid';
     }
 
