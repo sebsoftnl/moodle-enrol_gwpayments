@@ -43,7 +43,6 @@ use stdClass;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class controller {
-
     /**
      * @var \moodle_page
      */
@@ -204,5 +203,4 @@ class controller {
         $url->params($mergeparams);
         return $url;
     }
-
 }

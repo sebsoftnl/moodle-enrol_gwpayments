@@ -45,7 +45,6 @@ use exception;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class external extends external_api {
-
     /**
      * Check coupon code.
      *
@@ -60,7 +59,7 @@ class external extends external_api {
         // We always must pass webservice params through validate_parameters.
         $params = self::validate_parameters(
             self::check_coupon_parameters(),
-                ['couponcode' => $couponcode, 'courseid' => $courseid, 'instanceid' => $instanceid]
+            ['couponcode' => $couponcode, 'courseid' => $courseid, 'instanceid' => $instanceid]
         );
 
         $enrol = $DB->get_record('enrol', ['id' => $instanceid]);
@@ -125,8 +124,16 @@ class external extends external_api {
                     // Free pass! Perform delivery of order.
                     // We WILL force a dummy payment.
                     $payable = payment\service_provider::get_payable('fee', $instanceid);
-                    $paymentid = \core_payment\helper::save_payment($payable->get_account_id(), 'enrol_gwpayments', 'fee',
-                            $enrol->id, $USER->id, $rs->newprice, 'EUR', 'DUMMY');
+                    $paymentid = \core_payment\helper::save_payment(
+                        $payable->get_account_id(),
+                        'enrol_gwpayments',
+                        'fee',
+                        $enrol->id,
+                        $USER->id,
+                        $rs->newprice,
+                        'EUR',
+                        'DUMMY'
+                    );
 
                     payment\service_provider::deliver_order('fee', $enrol->id, $paymentid, $USER->id);
 
@@ -180,16 +187,20 @@ class external extends external_api {
         return new external_single_structure([
             'result' => new external_value(PARAM_BOOL, 'result of action'),
             'error' => new external_value(PARAM_TEXT, 'if result was false, error is here', false),
-            'data' => new external_single_structure([
-                'currency' => new external_value(PARAM_ALPHA, 'Currency'),
-                'cost' => new external_value(PARAM_FLOAT, 'Cost'),
-                'percentage' => new external_value(PARAM_FLOAT, 'Discount percentage'),
-                'discount' => new external_value(PARAM_FLOAT, 'Discount amount'),
-                'newprice' => new external_value(PARAM_FLOAT, 'New cost amount'),
-                'html' => new external_value(PARAM_RAW, 'HTML formatted replacement for the new cost'),
-                'freepass' => new external_value(PARAM_BOOL, 'Whether or not a free pass was granted', VALUE_OPTIONAL),
-                'freepassredirect' => new external_value(PARAM_LOCALURL, 'Free pass redirect URL', VALUE_OPTIONAL),
-            ], 'response data', VALUE_OPTIONAL),
+            'data' => new external_single_structure(
+                [
+                    'currency' => new external_value(PARAM_ALPHA, 'Currency'),
+                    'cost' => new external_value(PARAM_FLOAT, 'Cost'),
+                    'percentage' => new external_value(PARAM_FLOAT, 'Discount percentage'),
+                    'discount' => new external_value(PARAM_FLOAT, 'Discount amount'),
+                    'newprice' => new external_value(PARAM_FLOAT, 'New cost amount'),
+                    'html' => new external_value(PARAM_RAW, 'HTML formatted replacement for the new cost'),
+                    'freepass' => new external_value(PARAM_BOOL, 'Whether or not a free pass was granted', VALUE_OPTIONAL),
+                    'freepassredirect' => new external_value(PARAM_LOCALURL, 'Free pass redirect URL', VALUE_OPTIONAL),
+                ],
+                'response data',
+                VALUE_OPTIONAL
+            ),
         ]);
     }
 
@@ -219,18 +230,18 @@ class external extends external_api {
         $qwhere[] = $DB->sql_like('c.idnumber', '?', false, false);
         $qparams[] = $query;
 
-        $where[] = '('.implode(' OR ', $qwhere).')';
+        $where[] = '(' . implode(' OR ', $qwhere) . ')';
 
         $sql = "SELECT id, shortname, fullname, idnumber FROM {course} c
-             WHERE ".implode(" AND ", $where).
-             " ORDER BY shortname ASC";
+                WHERE " . implode(" AND ", $where) .
+                " ORDER BY shortname ASC";
         $rs = $DB->get_recordset_sql($sql, $qparams);
         $courses = [];
-        $courses[] = (object)['id' => 0, 'name' => get_string('entiresite', 'enrol_gwpayments')];
+        $courses[] = (object) ['id' => 0, 'name' => get_string('entiresite', 'enrol_gwpayments')];
         foreach ($rs as $course) {
-            $courses[] = (object)[
-                'id' => $course->id,
-                'name' => $course->shortname . (empty($course->idnumber) ? '' : ' ('.$course->idnumber.')'),
+            $courses[] = (object) [
+                        'id' => $course->id,
+                        'name' => $course->shortname . (empty($course->idnumber) ? '' : ' (' . $course->idnumber . ')'),
             ];
         }
         $rs->close();
@@ -245,8 +256,13 @@ class external extends external_api {
      */
     public static function find_courses_parameters() {
         return new external_function_parameters([
-            'query' => new external_value(PARAM_TEXT,
-                    'search string', VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
+            'query' => new external_value(
+                PARAM_TEXT,
+                'search string',
+                VALUE_REQUIRED,
+                null,
+                NULL_NOT_ALLOWED
+            ),
         ]);
     }
 
@@ -258,10 +274,9 @@ class external extends external_api {
     public static function find_courses_returns() {
         return new external_multiple_structure(
             new external_single_structure([
-                    'id' => new external_value(PARAM_INT, 'course id'),
-                    'name' => new external_value(PARAM_TEXT, 'name'),
+                'id' => new external_value(PARAM_INT, 'course id'),
+                'name' => new external_value(PARAM_TEXT, 'name'),
             ])
         );
     }
-
 }

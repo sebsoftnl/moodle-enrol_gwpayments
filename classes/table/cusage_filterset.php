@@ -41,7 +41,6 @@ use core_table\local\filter\integer_filter;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class cusage_filterset extends \core_table\local\filter\filterset {
-
     /**
      * Get required filters
      *
@@ -64,5 +63,4 @@ class cusage_filterset extends \core_table\local\filter\filterset {
         ];
         return $rs;
     }
-
 }

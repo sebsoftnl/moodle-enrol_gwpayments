@@ -26,6 +26,7 @@
  * @author      RvD <helpdesk@sebsoft.nl>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+// @codingStandardsIgnoreFile Due to Moodle failing the "class implements" alphabetically itself.
 
 namespace enrol_gwpayments\privacy;
 
@@ -47,7 +48,8 @@ use core_payment\helper as payment_helper;
  */
 class provider implements
     \core_privacy\local\metadata\null_provider,
-    \core_payment\privacy\consumer_provider {
+    \core_payment\privacy\consumer_provider
+{
     /**
      * Get the language string identifier with the component's language
      * file to explain why this plugin stores no data.
@@ -284,5 +286,4 @@ class provider implements
             \core_payment\privacy\provider::delete_data_for_payment_sql($sql, $params);
         }
     }
-
 }

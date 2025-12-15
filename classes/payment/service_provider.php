@@ -41,7 +41,6 @@ use enrol_gwpayments\local\helper;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class service_provider implements \core_payment\local\callback\service_provider {
-
     /**
      * Generate payable data.
      *
@@ -142,8 +141,15 @@ class service_provider implements \core_payment\local\callback\service_provider 
             // We wish to track code usage here.
             $cpdata = helper::get_session_coupon();
             $payabledata = static::generate_payabledata($instance, $paymentarea, $instanceid);
-            helper::track_coupon_usage($instance->id, $instance->courseid, $userid,
-                    $cpdata->code, $payabledata->discount, $paymentid, 1);
+            helper::track_coupon_usage(
+                $instance->id,
+                $instance->courseid,
+                $userid,
+                $cpdata->code,
+                $payabledata->discount,
+                $paymentid,
+                1
+            );
 
             helper::use_session_coupon($paymentid);
         }
@@ -153,5 +159,4 @@ class service_provider implements \core_payment\local\callback\service_provider 
 
         return true;
     }
-
 }

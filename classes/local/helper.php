@@ -40,7 +40,6 @@ use enrol_gwpayments\exception;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class helper {
-
     /**
      * Find coupon record by code.
      *
@@ -111,9 +110,8 @@ class helper {
         if (static::has_session_coupon()) {
             $couponrecord = static::get_coupon($SESSION->enrol_gwpayments_coupon->code);
             if (is_object($couponrecord)) {
-                $sql = 'UPDATE  {enrol_gwpayments_coupon} SET numused = numused + 1, timemodified = ? WHERE id = ?';
+                $sql = 'UPDATE {enrol_gwpayments_coupon} SET numused = numused + 1, timemodified = ? WHERE id = ?';
                 $DB->execute($sql, [time(), $couponrecord->id]);
-
             }
             static::clear_session_coupon();
         }
@@ -182,8 +180,15 @@ class helper {
      * @param int $paymentid
      * @param int $verified
      */
-    public static function track_coupon_usage(int $enrolid, int $courseid, int $userid,
-            string $code, float $realdiscountvalue = 0, int $paymentid = 0, int $verified = 0) {
+    public static function track_coupon_usage(
+        int $enrolid,
+        int $courseid,
+        int $userid,
+        string $code,
+        float $realdiscountvalue = 0,
+        int $paymentid = 0,
+        int $verified = 0
+    ) {
         global $DB;
         $coupon = $DB->get_record('enrol_gwpayments_coupon', ['code' => $code]);
         $coupondata = clone $coupon;
@@ -243,5 +248,4 @@ class helper {
         $lifetime = 24 * HOURSECS;
         $DB->execute('DELETE FROM {enrol_gwpayments_coupon} WHERE validto < ?', [time() - $lifetime]);
     }
-
 }

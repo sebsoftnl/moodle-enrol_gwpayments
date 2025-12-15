@@ -39,7 +39,6 @@ namespace enrol_gwpayments\task;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class defaulttasks extends \core\task\scheduled_task {
-
     /**
      * Return the localised name for this task
      *
@@ -60,5 +59,4 @@ class defaulttasks extends \core\task\scheduled_task {
     public function execute() {
         \enrol_gwpayments\local\helper::expire_coupons();
     }
-
 }

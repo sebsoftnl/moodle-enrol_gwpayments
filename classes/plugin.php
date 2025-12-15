@@ -35,7 +35,9 @@ use enrol_gwpayments\payment\service_provider;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/cohort/lib.php');
+require_once($CFG->dirroot . '/cohort/lib.php');
+
+use core_payment\helper;
 
 /**
  * All-in-one enrolment plugin implementation.
@@ -45,7 +47,6 @@ require_once($CFG->dirroot.'/cohort/lib.php');
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class enrol_gwpayments_plugin extends \enrol_plugin {
-
     /**
      * Returns the list of currencies that the payment subsystem supports and therefore we can work with.
      *
@@ -59,7 +60,7 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             $currencies[$c] = new lang_string($c, 'core_currencies');
         }
 
-        uasort($currencies, function($a, $b) {
+        uasort($currencies, function ($a, $b) {
             return strcmp($a, $b);
         });
 
@@ -233,24 +234,34 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         $context = context_course::instance($course->id);
 
         // Pass $view=true to filter hidden caps if the user cannot see them.
-        if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC',
-                                             '', '', '', '', false, true)) {
+        $users = get_users_by_capability(
+            $context,
+            'moodle/course:update',
+            'u.*',
+            'u.id ASC',
+            '',
+            '',
+            '',
+            '',
+            false,
+            true
+        );
+        if (!empty($users)) {
             $users = sort_by_roleassignment_authority($users, $context);
             $teacher = array_shift($users);
         } else {
             $teacher = false;
         }
 
-        if ( (float) $instance->cost <= 0 ) {
+        if ((float) $instance->cost <= 0) {
             $cost = (float) $this->get_config('cost');
         } else {
             $cost = (float) $instance->cost;
         }
 
         if (abs($cost) < 0.01) { // No cost, other enrolment methods (instances) should be used.
-            echo '<p>'.get_string('nocost', 'enrol_gwpayments').'</p>';
+            echo '<p>' . get_string('nocost', 'enrol_gwpayments') . '</p>';
         } else {
-
             $data = (object)[
                 'isguestuser' => isguestuser(),
                 'cost' => \core_payment\helper::get_cost_as_string($cost, $instance->currency),
@@ -388,16 +399,19 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         global $DB;
         $cohorts = [0 => get_string('no')];
         $allcohorts = cohort_get_available_cohorts($context, 0, 0, 0);
-        if (property_exists($instance, 'customint5') && !isset($allcohorts[$instance->customint5]) &&
-                ($c = $DB->get_record('cohort', ['id' => $instance->customint5],
-                        'id, name, idnumber, contextid, visible', IGNORE_MISSING))) {
+        $cfields = 'id, name, idnumber, contextid, visible';
+        if (
+            property_exists($instance, 'customint5') &&
+            !isset($allcohorts[$instance->customint5]) &&
+            ($c = $DB->get_record('cohort', ['id' => $instance->customint5], $cfields, IGNORE_MISSING))
+        ) {
             // Current cohort was not found because current user can not see it. Still keep it.
             $allcohorts[$instance->customint5] = $c;
         }
         foreach ($allcohorts as $c) {
             $cohorts[$c->id] = format_string($c->name, true, ['context' => context::instance_by_id($c->contextid)]);
             if ($c->idnumber) {
-                $cohorts[$c->id] .= ' ['.s($c->idnumber).']';
+                $cohorts[$c->id] .= ' [' . s($c->idnumber) . ']';
             }
         }
         if (property_exists($instance, 'customint5') && !isset($allcohorts[$instance->customint5])) {
@@ -428,8 +442,12 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
             $accounts = ((count($accounts) > 1) ? ['' => ''] : []) + $accounts;
             $mform->addElement('select', 'customint1', get_string('paymentaccount', 'payment'), $accounts);
         } else {
-            $mform->addElement('static', 'customint1_text', get_string('paymentaccount', 'payment'),
-                html_writer::span(get_string('noaccountsavilable', 'payment'), 'alert alert-danger'));
+            $mform->addElement(
+                'static',
+                'customint1_text',
+                get_string('paymentaccount', 'payment'),
+                html_writer::span(get_string('noaccountsavilable', 'payment'), 'alert alert-danger')
+            );
             $mform->addElement('hidden', 'customint1');
             $mform->setType('customint1', PARAM_INT);
         }
@@ -490,8 +508,12 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         $mform->setDefault('expirynotify', $this->get_config('expirynotify'));
         $mform->addHelpButton('expirynotify', 'expirynotify', 'core_enrol');
 
-        $mform->addElement('duration', 'expirythreshold', get_string('expirythreshold', 'core_enrol'),
-                ['optional' => false, 'defaultunit' => 86400]);
+        $mform->addElement(
+            'duration',
+            'expirythreshold',
+            get_string('expirythreshold', 'core_enrol'),
+            ['optional' => false, 'defaultunit' => 86400]
+        );
         $mform->setDefault('expirythreshold', $this->get_config('expirythreshold'));
         $mform->addHelpButton('expirythreshold', 'expirythreshold', 'core_enrol');
         $mform->disabledIf('expirythreshold', 'expirynotify', 'eq', 0);
@@ -552,9 +574,10 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         $typeerrors = $this->validate_param_types($data, $tovalidate);
         $errors = array_merge($errors, $typeerrors);
 
-        if ($data['status'] == ENROL_INSTANCE_ENABLED &&
-                (!$data['customint1']
-                    || !array_key_exists($data['customint1'], \core_payment\helper::get_payment_accounts_menu($context)))) {
+        if (
+            $data['status'] == ENROL_INSTANCE_ENABLED &&
+            (!$data['customint1'] || !array_key_exists($data['customint1'], helper::get_payment_accounts_menu($context)))
+        ) {
             $errors['status'] = 'Enrolments can not be enabled without specifying the payment account';
         }
 
@@ -650,15 +673,23 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
                     $courseadminnode->add_node($cagwpaymentsnode, 'users');
                 }
                 // Add coupon manager node.
-                $cagwpaymentsnode->add(get_string('coupons:manage', 'enrol_gwpayments'),
+                $cagwpaymentsnode->add(
+                    get_string('coupons:manage', 'enrol_gwpayments'),
                     new moodle_url('/enrol/gwpayments/couponmanager.php', ['cid' => $instance->courseid]),
-                    navigation_node::TYPE_CUSTOM, get_string('coupons:manage', 'enrol_gwpayments'),
-                    'aiocoupons2', new pix_icon('coupons', '', 'enrol_gwpayments'));
+                    navigation_node::TYPE_CUSTOM,
+                    get_string('coupons:manage', 'enrol_gwpayments'),
+                    'aiocoupons2',
+                    new pix_icon('coupons', '', 'enrol_gwpayments')
+                );
                 // Add coupon usage node.
-                $cagwpaymentsnode->add(get_string('report:cusage', 'enrol_gwpayments'),
+                $cagwpaymentsnode->add(
+                    get_string('report:cusage', 'enrol_gwpayments'),
                     new moodle_url('/enrol/gwpayments/report.php', ['courseid' => $instance->courseid]),
-                    navigation_node::TYPE_CUSTOM, get_string('report:cusage', 'enrol_gwpayments'),
-                    'aiocusage2', new pix_icon('coupons', '', 'enrol_gwpayments'));
+                    navigation_node::TYPE_CUSTOM,
+                    get_string('report:cusage', 'enrol_gwpayments'),
+                    'aiocusage2',
+                    new pix_icon('coupons', '', 'enrol_gwpayments')
+                );
             }
         }
     }
@@ -704,5 +735,4 @@ class enrol_gwpayments_plugin extends \enrol_plugin {
         $this->process_expirations($trace);
         $this->send_expiry_notifications($trace);
     }
-
 }

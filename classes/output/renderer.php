@@ -39,7 +39,6 @@ namespace enrol_gwpayments\output;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends \plugin_renderer_base {
-
     /**
      * Create a tab object with a nice image view, instead of just a regular tabobject
      *
@@ -52,8 +51,15 @@ class renderer extends \plugin_renderer_base {
      * @param bool $linkedwhenselected whether to display a link under the tab name when it's selected
      * @return \tabobject
      */
-    protected function create_pictab($id, $pix = null, $component = null, $link = null,
-            $text = '', $title = '', $linkedwhenselected = false) {
+    protected function create_pictab(
+        $id,
+        $pix = null,
+        $component = null,
+        $link = null,
+        $text = '',
+        $title = '',
+        $linkedwhenselected = false
+    ) {
         $img = '';
         if ($pix !== null) {
             $img = $this->image_icon($pix, $title, empty($component) ? 'moodle' : $component, ['class' => 'icon']);
@@ -78,35 +84,62 @@ class renderer extends \plugin_renderer_base {
 
         $active1 = $active2 = null;
         if (strpos($selected, '-') !== false) {
-            list($active1, $active2) = explode('-', $selected);
+            [$active1, $active2] = explode('-', $selected);
         } else {
             $active1 = $selected;
         }
 
-        $couponstab = $this->create_pictab('coupons', 'i/coupons', '',
-                new \moodle_url($CFG->wwwroot . '/enrol/gwpayments/couponmanager.php', $params),
-                get_string('coupons:manage', 'enrol_gwpayments'));
+        $couponstab = $this->create_pictab(
+            'coupons',
+            'i/coupons',
+            '',
+            new \moodle_url($CFG->wwwroot . '/enrol/gwpayments/couponmanager.php', $params),
+            get_string('coupons:manage', 'enrol_gwpayments')
+        );
         if ($active1 == 'coupons' && !empty($active2)) {
-            $couponstab->subtree[] = $this->create_pictab('coupons', 'i/up', null,
-                    new \moodle_url($CFG->wwwroot . '/enrol/gwpayments/couponmanager.php', $params),
-                    get_string('backtolist', 'enrol_gwpayments'), '', true);
+            $couponstab->subtree[] = $this->create_pictab(
+                'coupons',
+                'i/up',
+                null,
+                new \moodle_url($CFG->wwwroot . '/enrol/gwpayments/couponmanager.php', $params),
+                get_string('backtolist', 'enrol_gwpayments'),
+                '',
+                true
+            );
         }
-        $couponstab->subtree[] = $this->create_pictab('coupons-add', 'i/add', null,
-                    new \moodle_url($CFG->wwwroot . '/enrol/gwpayments/couponmanager.php', $params + ['action' => 'add']),
-                    get_string('coupon:add', 'enrol_gwpayments'), '', true);
+        $couponstab->subtree[] = $this->create_pictab(
+            'coupons-add',
+            'i/add',
+            null,
+            new \moodle_url($CFG->wwwroot . '/enrol/gwpayments/couponmanager.php', $params + ['action' => 'add']),
+            get_string('coupon:add', 'enrol_gwpayments'),
+            '',
+            true
+        );
         if ($active1 == 'coupons' && $active2 === 'edit') {
-            $couponstab->subtree[] = $this->create_pictab('coupons-edit', 'i/edit', null,
-                    new \moodle_url($CFG->wwwroot . '/enrol/gwpayments/couponmanager.php', $params + ['action' => 'edit']),
-                    get_string('coupon:edit', 'enrol_gwpayments'), '', true);
+            $couponstab->subtree[] = $this->create_pictab(
+                'coupons-edit',
+                'i/edit',
+                null,
+                new \moodle_url($CFG->wwwroot . '/enrol/gwpayments/couponmanager.php', $params + ['action' => 'edit']),
+                get_string('coupon:edit', 'enrol_gwpayments'),
+                '',
+                true
+            );
         }
         if ($active1 == 'coupons' && $active2 === 'delete') {
-            $couponstab->subtree[] = $this->create_pictab('coupons-delete', 'i/delete', null,
-                    new \moodle_url($CFG->wwwroot . '/enrol/gwpayments/couponmanager.php', $params + ['action' => 'delete']),
-                    get_string('coupon:delete', 'enrol_gwpayments'), '', true);
+            $couponstab->subtree[] = $this->create_pictab(
+                'coupons-delete',
+                'i/delete',
+                null,
+                new \moodle_url($CFG->wwwroot . '/enrol/gwpayments/couponmanager.php', $params + ['action' => 'delete']),
+                get_string('coupon:delete', 'enrol_gwpayments'),
+                '',
+                true
+            );
         }
         $tabs[] = $couponstab;
 
         return $this->tabtree($tabs, $selected);
     }
-
 }

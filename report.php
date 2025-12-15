@@ -68,4 +68,3 @@ navigation_node::override_active_url($PAGE->url);
 $renderer = $PAGE->get_renderer('enrol_gwpayments');
 $controller = new \enrol_gwpayments\local\report\controller($PAGE, $OUTPUT, $renderer);
 $controller->execute_request();
-

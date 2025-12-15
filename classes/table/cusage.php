@@ -43,7 +43,6 @@ use core_table\sql_table;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class cusage extends sql_table implements \core_table\dynamic {
-
     /**
      * @var \context
      */
@@ -200,8 +199,13 @@ class cusage extends sql_table implements \core_table\dynamic {
                 $tmpwheres = [];
                 foreach ($kwfields as $field) {
                     $param = str_replace('.', '', "{$field}key{$index}");
-                    $kwsqlwhere = $DB->sql_like("COALESCE(p.{$field}, '')", ":{$param}", false, false,
-                            $kwfilter->get_join_type() === $kwfilter::JOINTYPE_NONE);
+                    $kwsqlwhere = $DB->sql_like(
+                        "COALESCE(p.{$field}, '')",
+                        ":{$param}",
+                        false,
+                        false,
+                        $kwfilter->get_join_type() === $kwfilter::JOINTYPE_NONE
+                    );
                     $tmpwheres[] = $kwsqlwhere;
                     $params[$param] = "%{$keyword}%";
                 }
@@ -292,8 +296,10 @@ class cusage extends sql_table implements \core_table\dynamic {
      * @return string
      */
     public function col_coursefullname($row) {
-        return \html_writer::link(new \moodle_url('/course/view.php', ['id' => $row->courseid]),
-                    $row->coursefullname);
+        return \html_writer::link(
+            new \moodle_url('/course/view.php', ['id' => $row->courseid]),
+            $row->coursefullname
+        );
     }
 
     /**
@@ -367,8 +373,13 @@ class cusage extends sql_table implements \core_table\dynamic {
      *
      * @return string
      */
-    private static function get_all_user_name_fields($returnsql = false, $tableprefix = '',
-            $prefix = '', $fieldprefix = '', $order = false) {
+    private static function get_all_user_name_fields(
+        $returnsql = false,
+        $tableprefix = '',
+        $prefix = '',
+        $fieldprefix = '',
+        $order = false
+    ) {
         if (class_exists('\core_user\fields', true)) {
             // This is Moodle 3.11+.
             $usql = \core_user\fields::for_name()->get_sql($tableprefix, true, $fieldprefix, '', false);
@@ -377,5 +388,4 @@ class cusage extends sql_table implements \core_table\dynamic {
             return get_all_user_name_fields($returnsql, $tableprefix, $prefix, $fieldprefix, $order);
         }
     }
-
 }

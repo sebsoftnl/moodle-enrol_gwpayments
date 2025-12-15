@@ -46,7 +46,6 @@ use pix_icon;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class coupontable extends \table_sql {
-
     /**
      * table type identifier for all coupons
      */
@@ -327,8 +326,11 @@ class coupontable extends \table_sql {
      * @return string added to the class="" attribute of the tr.
      */
     public function get_row_class($row) {
-        if ($row->validto < time() || $row->validfrom > time()
-                || ($row->maxusage > 0 && $row->numused >= $row->maxusage)) {
+        if (
+            $row->validto < time() ||
+            $row->validfrom > time() ||
+            ($row->maxusage > 0 && $row->numused >= $row->maxusage)
+        ) {
             return 'dimmed_text';
         }
         return parent::get_row_class($row);
@@ -345,23 +347,22 @@ class coupontable extends \table_sql {
         $actions = [];
         if (has_capability('enrol/gwpayments:deletecoupon', $PAGE->context)) {
             $actions[] = $OUTPUT->action_icon(
-                    new moodle_url($this->baseurl, ['action' => 'delete', 'id' => $row->id]),
-                    new pix_icon('i/delete', get_string('coupon:delete', 'enrol_gwpayments'), 'moodle', ['class' => 'icon']),
-                    null,
-                    ['alt' => get_string('coupon:delete', 'enrol_gwpayments')],
-                    false
-                );
+                new moodle_url($this->baseurl, ['action' => 'delete', 'id' => $row->id]),
+                new pix_icon('i/delete', get_string('coupon:delete', 'enrol_gwpayments'), 'moodle', ['class' => 'icon']),
+                null,
+                ['alt' => get_string('coupon:delete', 'enrol_gwpayments')],
+                false
+            );
         }
         if (has_capability('enrol/gwpayments:editcoupon', $PAGE->context)) {
             $actions[] = $OUTPUT->action_icon(
-                    new moodle_url($this->baseurl, ['action' => 'edit', 'id' => $row->id]),
-                    new pix_icon('i/edit', get_string('coupon:edit', 'enrol_gwpayments'), 'moodle', ['class' => 'icon']),
-                    null,
-                    ['alt' => get_string('coupon:edit', 'enrol_gwpayments')],
-                    false
-                );
+                new moodle_url($this->baseurl, ['action' => 'edit', 'id' => $row->id]),
+                new pix_icon('i/edit', get_string('coupon:edit', 'enrol_gwpayments'), 'moodle', ['class' => 'icon']),
+                null,
+                ['alt' => get_string('coupon:edit', 'enrol_gwpayments')],
+                false
+            );
         }
         return implode(' ', $actions);
     }
-
 }

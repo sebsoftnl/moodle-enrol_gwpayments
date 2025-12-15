@@ -39,7 +39,6 @@ namespace enrol_gwpayments;
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class exception extends \moodle_exception {
-
     /**
      * Constructor
      * @param string $errorcode The name of the string to print
@@ -51,5 +50,4 @@ class exception extends \moodle_exception {
     public function __construct($errorcode, $link = '', $a = null, $debuginfo = null) {
         parent::__construct($errorcode, 'enrol_gwpayments', $link, $a, $debuginfo);
     }
-
 }

@@ -43,7 +43,6 @@ require_once($CFG->libdir . '/formslib.php');
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class coupondelete extends \moodleform {
-
     /**
      * form definition
      */
@@ -103,5 +102,4 @@ class coupondelete extends \moodleform {
         $DB->delete_records('enrol_gwpayments_coupon', ['id' => $this->_customdata->id]);
         redirect($redirect, get_string('coupon:deleted', 'enrol_gwpayments'));
     }
-
 }
