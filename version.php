@@ -34,4 +34,4 @@ $plugin->component = 'enrol_gwpayments';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release = '1.5.0 (build 2025120100)';
 $plugin->dependencies = [];
-$plugin->supported = [402, 500];
+$plugin->supported = [402, 502];
